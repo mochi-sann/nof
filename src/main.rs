@@ -1,3 +1,6 @@
+mod read_package_json;
+use read_package_json::get_scripts;
+
 fn main() {
-    println!("Hello, world!");
+    get_scripts();
 }
