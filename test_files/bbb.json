@@ -1,0 +1,10 @@
+{
+  "name": "this is test package.json ",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "start2": "node server.js",
+    "start3": "node server.js"
+  }
+}

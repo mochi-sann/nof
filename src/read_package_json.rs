@@ -48,4 +48,22 @@ mod tests {
         // 期待値と実際の値が一致するかを検証
         assert_eq!(expected_scripts, actual_scripts);
     }
+    #[test]
+    fn test_get_scripts_2() {
+        // テスト用のpackage.jsonファイルのパス
+        let file_path = String::from("./test_files/bbb.json");
+
+        // テスト用のscripts
+        let expected_scripts = vec![
+            (String::from("start"), String::from("node server.js")),
+            (String::from("start2"), String::from("node server.js")),
+            (String::from("start3"), String::from("node server.js")),
+        ];
+
+        // get_scripts関数で取得したscriptsの一覧
+        let actual_scripts = get_scripts(file_path);
+
+        // 期待値と実際の値が一致するかを検証
+        assert_eq!(expected_scripts, actual_scripts);
+    }
 }
