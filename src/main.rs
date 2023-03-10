@@ -1,3 +1,4 @@
+mod fzf_scripts;
 mod read_package_json;
 use clap::Parser;
 use read_package_json::get_scripts;
@@ -28,9 +29,11 @@ fn main() {
 
     match &cli.command {
         Commands::Run { target_path } => {
-            println!("target_path: {:?}", target_path);
+            // println!("target_path: {:?}", target_path);
             let scripts_list = get_scripts(target_path.to_string());
-            println!("scripts_list: {:?}", scripts_list);
+            // println!("scripts_list: {:?}", scripts_list);
+            let script = fzf_scripts::fzf_scipts(scripts_list);
+            println!("script: {:?} ", script);
         }
     }
     // get_scripts();
