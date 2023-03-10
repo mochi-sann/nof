@@ -29,7 +29,8 @@ fn main() {
     match &cli.command {
         Commands::Run { target_path } => {
             println!("target_path: {:?}", target_path);
-            get_scripts(target_path.to_string());
+            let scripts_list = get_scripts(target_path.to_string());
+            println!("scripts_list: {:?}", scripts_list);
         }
     }
     // get_scripts();
