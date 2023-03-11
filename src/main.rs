@@ -1,7 +1,10 @@
 mod fzf_scripts;
 mod read_package_json;
+mod select_node_package;
+mod fn_lib;
 use clap::Parser;
 use read_package_json::get_scripts;
+
 
 #[derive(Debug, Parser)]
 #[clap(
@@ -22,7 +25,7 @@ enum Commands {
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
 
-        #[arg(short, long, default_value = "npm")]
+        #[arg(short, long)]
         package_manneger: String,
     },
 }
@@ -40,7 +43,6 @@ fn main() {
             // println!("scripts_list: {:?}", scripts_list);
             let script = fzf_scripts::fzf_scipts(scripts_list);
             // println!("script: {:?} ", script);
-
         }
     }
     // get_scripts();
