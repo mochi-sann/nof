@@ -21,7 +21,7 @@ impl SkimItem for ScriptItems {
     }
 }
 
-pub fn fzf_scipts(scripts: Vec<(String, String)>) -> (String, String) {
+pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     let options = SkimOptionsBuilder::default()
         .height(Some("30%"))
         .multi(true)
@@ -44,9 +44,11 @@ pub fn fzf_scipts(scripts: Vec<(String, String)>) -> (String, String) {
         .map(|out| out.selected_items)
         .unwrap_or_else(Vec::new);
 
+    let mut return_value: Vec<String> = Vec::new();
     print!("\x1B[?25h");
-    return (
-        selected_items[0].output().to_string(),
-        selected_items[1].output().to_string(),
-    );
+    for item in selected_items.iter() {
+        println!("{:?}", Cow::Borrowed(&item.output()));
+        return_value.push(Cow::Borrowed(&item.output()).to_string())
+    }
+    return return_value;
 }

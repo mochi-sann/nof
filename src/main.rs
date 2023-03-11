@@ -21,6 +21,9 @@ enum Commands {
     Run {
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
+
+        #[arg(short, long, default_value = "npm")]
+        package_manneger: String,
     },
 }
 
@@ -28,12 +31,16 @@ fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Commands::Run { target_path } => {
+        Commands::Run {
+            target_path,
+            package_manneger,
+        } => {
             // println!("target_path: {:?}", target_path);
             let scripts_list = get_scripts(target_path.to_string());
             // println!("scripts_list: {:?}", scripts_list);
             let script = fzf_scripts::fzf_scipts(scripts_list);
-            println!("script: {:?} ", script);
+            // println!("script: {:?} ", script);
+
         }
     }
     // get_scripts();
