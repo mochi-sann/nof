@@ -45,7 +45,7 @@ pub fn detect_package_manager(project_dir: &str) -> NodePackageMannegerType {
 
 #[cfg(test)]
 mod tests {
-    use crate::fn_lib::type_node_pac;
+    
 
     use super::*;
 

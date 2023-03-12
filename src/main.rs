@@ -41,9 +41,9 @@ fn main() {
             // println!("target_path: {:?}", target_path);
             let scripts_list = get_scripts(target_path.to_string());
             // println!("scripts_list: {:?}", scripts_list);
-            let script = fzf_scripts::fzf_scipts(scripts_list);
+            let _script = fzf_scripts::fzf_scipts(scripts_list);
             // println!("script: {:?} ", script);
-            let node_package_manneger_type = match package_manneger.as_str() {
+            let _node_package_manneger_type = match package_manneger.as_str() {
                 "yarn" => NodePackageMannegerType::Yarn,
                 "npm" => NodePackageMannegerType::Npm,
                 "pnpm" => NodePackageMannegerType::Pnpm,
