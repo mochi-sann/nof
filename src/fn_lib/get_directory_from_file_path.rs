@@ -1,4 +1,4 @@
-use std::path::{Component, Path};
+use std::path::Path;
 
 pub fn get_directory_from_file_path(file_path: &str) -> Option<&Path> {
     let path = Path::new(file_path);
@@ -7,7 +7,7 @@ pub fn get_directory_from_file_path(file_path: &str) -> Option<&Path> {
         return Some(path);
     } else {
         let path = Path::new(file_path);
-        return path.parent()
+        return path.parent();
     }
 }
 
@@ -30,6 +30,12 @@ mod tests {
     #[test]
     fn test_get_directory_from_file_path_long_2() {
         let file_path = "./aaa/bbb/ccc/";
+        let directory = get_directory_from_file_path(file_path);
+        assert_eq!(directory, Some(Path::new("./aaa/bbb")));
+    }
+    #[test]
+    fn test_get_directory_from_file_path_long_3() {
+        let file_path = "aaa/bbb/ccc/";
         let directory = get_directory_from_file_path(file_path);
         assert_eq!(directory, Some(Path::new("aaa/bbb")));
     }
