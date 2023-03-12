@@ -1,10 +1,10 @@
+mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
 mod select_node_package;
-mod fn_lib;
 use clap::Parser;
+use fn_lib::type_node_pac::NodePackageMannegerType;
 use read_package_json::get_scripts;
-
 
 #[derive(Debug, Parser)]
 #[clap(
@@ -43,6 +43,12 @@ fn main() {
             // println!("scripts_list: {:?}", scripts_list);
             let script = fzf_scripts::fzf_scipts(scripts_list);
             // println!("script: {:?} ", script);
+            let node_package_manneger_type = match package_manneger.as_str() {
+                "yarn" => NodePackageMannegerType::Yarn,
+                "npm" => NodePackageMannegerType::Npm,
+                "pnpm" => NodePackageMannegerType::Pnpm,
+                _ => NodePackageMannegerType::Yarn,
+            };
         }
     }
     // get_scripts();
