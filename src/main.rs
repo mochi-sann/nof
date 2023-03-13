@@ -34,6 +34,9 @@ enum Commands {
 
         #[arg(short, long, value_enum)]
         package_manneger: Option<NodePackageMannegerType>,
+
+        #[arg(short, long)]
+        script: Option<String>,
     },
 }
 
@@ -44,10 +47,15 @@ fn main() {
         Commands::Run {
             target_path,
             package_manneger: package_manneger_select,
+            script: command_scipts,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
             let scripts_list = get_scripts(target_path.to_string());
-            let script = fzf_scripts::fzf_scipts(scripts_list);
+
+            let script = match command_scipts {
+                None => fzf_scripts::fzf_scipts(scripts_list),
+                Some(v) => vec![v.clone()],
+            };
 
             let package_manager = match package_manneger_select {
                 None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
