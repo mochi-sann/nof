@@ -47,7 +47,6 @@ pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     let mut return_value: Vec<String> = Vec::new();
     print!("\x1B[?25h");
     for item in selected_items.iter() {
-        println!("{:?}", Cow::Borrowed(&item.output()));
         return_value.push(Cow::Borrowed(&item.output()).to_string())
     }
     return return_value;
