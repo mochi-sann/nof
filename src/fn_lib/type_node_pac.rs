@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, clap::ValueEnum, Clone)]
 pub enum NodePackageMannegerType {
     Npm,
     Yarn,
@@ -39,20 +39,30 @@ pub fn detect_package_manager(project_dir: &str) -> NodePackageMannegerType {
     } else if package_json["devDependencies"].is_object() {
         NodePackageMannegerType::Yarn
     } else {
-        NodePackageMannegerType::Unknown
+        NodePackageMannegerType::Npm
     }
 }
 
 #[cfg(test)]
 mod tests {
-    
-
     use super::*;
 
     #[test]
-    fn test_detect_package_manager() {
+    fn test_detect_package_manager_npm() {
         let project_dir = "./test_files/package_test/npm";
         let package_manager = detect_package_manager(project_dir);
         assert_eq!(package_manager, NodePackageMannegerType::Npm);
+    }
+    #[test]
+    fn test_detect_package_manager_yarn() {
+        let project_dir = "./test_files/package_test/yarn";
+        let package_manager = detect_package_manager(project_dir);
+        assert_eq!(package_manager, NodePackageMannegerType::Yarn);
+    }
+    #[test]
+    fn test_detect_package_manager_pnpm() {
+        let project_dir = "./test_files/package_test/pnpm";
+        let package_manager = detect_package_manager(project_dir);
+        assert_eq!(package_manager, NodePackageMannegerType::Pnpm);
     }
 }
