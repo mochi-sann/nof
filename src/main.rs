@@ -43,16 +43,16 @@ fn main() {
     match &cli.command {
         Commands::Run {
             target_path,
-            package_manneger: _,
+            package_manneger: package_manneger_select,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
-            println!("target_path: {:?}", target_path);
             let scripts_list = get_scripts(target_path.to_string());
             let script = fzf_scripts::fzf_scipts(scripts_list);
 
-            let package_manager =
-                detect_package_manager(&folder_path.expect("./").to_str().unwrap());
-            println!("package_manager: {:?}", package_manager);
+            let package_manager = match package_manneger_select {
+                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
+                Some(v) => v.clone(),
+            };
             run_node_scripts(package_manager, script[0].to_string());
         }
     }
