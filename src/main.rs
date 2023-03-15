@@ -1,7 +1,6 @@
 mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
-mod select_node_package;
 
 use clap::Parser;
 use fn_lib::{
