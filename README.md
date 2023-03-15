@@ -15,7 +15,16 @@ $ cargo install nof
 
 To use RNSR, run the following command:
 ```bash
-$ nof run 
+Usage: nof <COMMAND>
+
+Commands:
+  run   Run node scripts
+  help  Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
+
 ```
 
 This will launch fzf, which allows you to search for Node.js scripts. Once you've selected a script from the search results, it will be executed.
