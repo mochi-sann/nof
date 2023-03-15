@@ -6,6 +6,8 @@ mod select_node_package;
 use clap::Parser;
 use fn_lib::{
     get_directory_from_file_path::get_directory_from_file_path,
+    run_command::execute_command,
+    run_node_scripts::ReturnCoomad,
     type_node_pac::{detect_package_manager, NodePackageMannegerType},
 };
 use read_package_json::get_scripts;
@@ -61,7 +63,14 @@ fn main() {
                 None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
                 Some(v) => v.clone(),
             };
-            run_node_scripts(package_manager, script[0].to_string());
+            let scripts_list = run_node_scripts(package_manager, script[0].to_string());
+            let ReturnCoomad { script, args } = scripts_list;
+
+            execute_command(script, args);
+            // match command_result {
+            //     Ok(value) => println!("succses ! {:?}" ,value ),
+            //     Err(err) => println!("error ! {:?}", err),
+            // }
         }
     }
     // get_scripts();

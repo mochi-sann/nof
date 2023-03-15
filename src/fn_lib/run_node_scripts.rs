@@ -1,8 +1,9 @@
-use std::process::Command;
-
 use super::type_node_pac::NodePackageMannegerType;
-
-pub fn run_node_scripts(package_type: NodePackageMannegerType, scripts: String) {
+pub struct ReturnCoomad {
+    pub script: String,
+    pub args: String,
+}
+pub fn run_node_scripts(package_type: NodePackageMannegerType, scripts: String) -> ReturnCoomad {
     let package_script = match package_type {
         NodePackageMannegerType::Npm => "npm",
         NodePackageMannegerType::Unknown => "npm",
@@ -10,10 +11,15 @@ pub fn run_node_scripts(package_type: NodePackageMannegerType, scripts: String) 
         NodePackageMannegerType::Pnpm => "pnpm",
     };
 
-    let _command_output = Command::new(package_script.to_string())
-        .arg("run")
-        .arg(scripts)
-        .spawn()
-        .expect("Failed to run node scripts");
+    let command = format!(
+        "{} {} {}",
+        package_script.to_string(),
+        &"run".to_string(),
+        &scripts.to_string()
+    );
 
+    return ReturnCoomad {
+        script: package_script.to_string(),
+        args: scripts.to_string(),
+    };
 }
