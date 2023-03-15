@@ -37,9 +37,15 @@ mod tests {
 
         // テスト用のscripts
         let expected_scripts = vec![
-            (String::from("build"), String::from("webpack --config webpack.config.js")),
+            (
+                String::from("build"),
+                String::from("webpack --config webpack.config.js"),
+            ),
             (String::from("start"), String::from("node server.js")),
-            (String::from("test"), String::from("echo \"Error: no test specified\" && exit 1")),
+            (
+                String::from("test"),
+                String::from("echo \"Error: no test specified\" && exit 1"),
+            ),
         ];
 
         // get_scripts関数で取得したscriptsの一覧
