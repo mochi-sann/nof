@@ -1,7 +1,9 @@
 use std::os::unix::process::CommandExt;
 use std::process::Command;
 
-pub fn execute_command(command: String, args: String) {
-    println!("command: {}", command);
-    Command::new(command).arg(&"run").arg(&args).exec();
+use super::package_commands::ReturnCoomad;
+
+pub fn execute_command(command: ReturnCoomad) {
+    println!("run : {} {} ", command.script, command.args);
+    Command::new(command.script).arg(&command.args).exec();
 }

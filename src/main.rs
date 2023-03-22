@@ -5,13 +5,10 @@ mod read_package_json;
 use clap::Parser;
 use fn_lib::{
     get_directory_from_file_path::get_directory_from_file_path,
-    run_command::execute_command,
-    run_node_scripts::ReturnCoomad,
-    type_node_pac::{detect_package_manager, NodePackageMannegerType},
+    package_commands::NodePackageMannegerType, run_command::execute_command,
+    type_node_pac::detect_package_manager,
 };
 use read_package_json::get_scripts;
-
-use crate::fn_lib::run_node_scripts::run_node_scripts;
 
 #[derive(Debug, Parser)]
 #[clap(
@@ -39,6 +36,17 @@ enum Commands {
         #[arg(short, long)]
         script: Option<String>,
     },
+    #[command(about = "install npm packages")]
+    Install {
+        #[arg(short, long, default_value = "./package.json")]
+        target_path: String,
+
+        #[arg(short, long, value_enum)]
+        package_manneger: Option<NodePackageMannegerType>,
+
+        #[arg(short, long, default_value = "false")]
+        save_dev: Option<bool>,
+    },
 }
 
 fn main() {
@@ -62,15 +70,15 @@ fn main() {
                 None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
                 Some(v) => v.clone(),
             };
-            let scripts_list = run_node_scripts(package_manager, script[0].to_string());
-            let ReturnCoomad { script, args } = scripts_list;
+            let run_scripts = package_manager.run_node_scripts(script[0].to_string());
 
-            execute_command(script, args);
-            // match command_result {
-            //     Ok(value) => println!("succses ! {:?}" ,value ),
-            //     Err(err) => println!("error ! {:?}", err),
-            // }
+            execute_command(run_scripts);
         }
+        Commands::Install {
+            target_path : _ ,
+            package_manneger: _ ,
+            save_dev: _ ,
+        } => {}
     }
     // get_scripts();
 }
