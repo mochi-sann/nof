@@ -23,28 +23,16 @@ impl NodePackageMannegerType {
             args: scripts.to_string(),
         };
     }
-    pub fn install_command(&self) -> &str {
-        match self {
+    pub fn install_command(&self, lib: String) -> ReturnCoomad {
+        let package_script = match self {
             NodePackageMannegerType::Npm => "npm install",
             NodePackageMannegerType::Yarn => "yarn install",
             NodePackageMannegerType::Pnpm => "pnpm install",
-        }
-    }
-
-    pub fn update_command(&self) -> &str {
-        match self {
-            NodePackageMannegerType::Npm => "npm update",
-            NodePackageMannegerType::Yarn => "yarn upgrade",
-            NodePackageMannegerType::Pnpm => "pnpm update",
-        }
-    }
-
-    fn uninstall_command(&self) -> &str {
-        match self {
-            NodePackageMannegerType::Npm => "npm uninstall",
-            NodePackageMannegerType::Yarn => "yarn remove",
-            NodePackageMannegerType::Pnpm => "pnpm remove",
-        }
+        };
+        return ReturnCoomad {
+            script: package_script.to_string(),
+            args: lib.to_string(),
+        };
     }
 }
 
@@ -86,47 +74,47 @@ mod tests {
     }
 
     #[test]
-    fn test_package_manager_install_command() {
+    fn test_package_manager_install_command_npm() {
+        let package_manager = NodePackageMannegerType::Npm;
         assert_eq!(
-            NodePackageMannegerType::Npm.install_command(),
-            "npm install"
-        );
-        assert_eq!(
-            NodePackageMannegerType::Yarn.install_command(),
-            "yarn install"
-        );
-        assert_eq!(
-            NodePackageMannegerType::Pnpm.install_command(),
-            "pnpm install"
+            package_manager.install_command("test".to_string()),
+            ReturnCoomad {
+                script: "npm install".to_string(),
+                args: "test".to_string(),
+            }
         );
     }
-
     #[test]
-    fn test_package_manager_update_command() {
-        assert_eq!(NodePackageMannegerType::Npm.update_command(), "npm update");
+    fn test_package_manager_install_command_yarn() {
+        let package_manager = NodePackageMannegerType::Yarn;
         assert_eq!(
-            NodePackageMannegerType::Yarn.update_command(),
-            "yarn upgrade"
-        );
-        assert_eq!(
-            NodePackageMannegerType::Pnpm.update_command(),
-            "pnpm update"
+            package_manager.install_command("test".to_string()),
+            ReturnCoomad {
+                script: "yarn install".to_string(),
+                args: "test".to_string(),
+            }
         );
     }
-
     #[test]
-    fn test_package_manager_uninstall_command() {
+    fn test_package_manager_install_command_pnpm() {
+        let package_manager = NodePackageMannegerType::Pnpm;
         assert_eq!(
-            NodePackageMannegerType::Npm.uninstall_command(),
-            "npm uninstall"
+            package_manager.install_command("test".to_string()),
+            ReturnCoomad {
+                script: "pnpm install".to_string(),
+                args: "test".to_string(),
+            }
         );
+    }
+    #[test]
+    fn test_package_manager_install_command_pnpm_none_lib() {
+        let package_manager = NodePackageMannegerType::Pnpm;
         assert_eq!(
-            NodePackageMannegerType::Yarn.uninstall_command(),
-            "yarn remove"
-        );
-        assert_eq!(
-            NodePackageMannegerType::Pnpm.uninstall_command(),
-            "pnpm remove"
+            package_manager.install_command("".to_string()),
+            ReturnCoomad {
+                script: "pnpm install".to_string(),
+                args: "".to_string(),
+            }
         );
     }
 }

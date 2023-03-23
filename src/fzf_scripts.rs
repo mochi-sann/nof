@@ -1,7 +1,12 @@
-use skim::prelude::*;
-
 // Vec<(String, String)>をフィルタリングして、結果をVec<(String, String)>で返す関数
 //
+
+use std::{borrow::Cow, sync::Arc};
+
+use skim::{
+    prelude::{unbounded, SkimOptionsBuilder},
+    ItemPreview, PreviewContext, Skim, SkimItem, SkimItemReceiver, SkimItemSender,
+};
 
 struct ScriptItems {
     inner: String,

@@ -5,7 +5,8 @@ mod read_package_json;
 use clap::Parser;
 use fn_lib::{
     get_directory_from_file_path::get_directory_from_file_path,
-    package_commands::NodePackageMannegerType, run_command::execute_command,
+    package_commands::{NodePackageMannegerType, ReturnCoomad},
+    run_command::execute_command,
     type_node_pac::detect_package_manager,
 };
 use read_package_json::get_scripts;
@@ -38,13 +39,15 @@ enum Commands {
     },
     #[command(about = "install npm packages")]
     Install {
+        /// Name of npm library
+        lib: Option<String>,
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
 
         #[arg(short, long, value_enum)]
         package_manneger: Option<NodePackageMannegerType>,
 
-        #[arg(short, long, default_value = "false")]
+        #[arg(short = 'D', long, default_value = "false")]
         save_dev: Option<bool>,
     },
 }
@@ -75,10 +78,30 @@ fn main() {
             execute_command(run_scripts);
         }
         Commands::Install {
-            target_path : _ ,
-            package_manneger: _ ,
-            save_dev: _ ,
-        } => {}
+            target_path,
+            package_manneger,
+            save_dev,
+            lib,
+        } => {
+            let folder_path = get_directory_from_file_path(&target_path);
+            let package_manager = match package_manneger {
+                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
+                Some(v) => v.clone(),
+            };
+            let lib_name = match lib {
+                None => "",
+                Some(v) => v,
+            };
+            let install_command = package_manager.install_command(lib_name.to_string());
+            debug!(install_command.clone());
+            debug!(package_manneger);
+            debug!(save_dev);
+            debug!(lib);
+            debug!(install_command.clone());
+
+            let run_script: ReturnCoomad = install_command;
+            execute_command(run_script);
+        }
     }
     // get_scripts();
 }
