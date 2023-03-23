@@ -40,7 +40,8 @@ enum Commands {
     #[command(about = "install npm packages")]
     Install {
         /// Name of npm library
-        lib: Option<String>,
+        library: Option<String>,
+
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
 
@@ -81,14 +82,14 @@ fn main() {
             target_path,
             package_manneger,
             save_dev,
-            lib,
+            library,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
             let package_manager = match package_manneger {
                 None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
                 Some(v) => v.clone(),
             };
-            let lib_name = match lib {
+            let lib_name = match library {
                 None => "",
                 Some(v) => v,
             };
@@ -96,7 +97,7 @@ fn main() {
             debug!(install_command.clone());
             debug!(package_manneger);
             debug!(save_dev);
-            debug!(lib);
+            debug!(library);
             debug!(install_command.clone());
 
             let run_script: ReturnCoomad = install_command;
