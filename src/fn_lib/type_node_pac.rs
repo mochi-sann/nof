@@ -1,32 +1,9 @@
-use std::fs::File;
-use std::io::Read;
 use std::path::Path;
 
-#[derive(Debug, PartialEq, clap::ValueEnum, Clone)]
-pub enum NodePackageMannegerType {
-    Npm,
-    Yarn,
-    Pnpm,
-    Unknown,
-}
+use super::package_commands::NodePackageMannegerType;
 
 pub fn detect_package_manager(project_dir: &str) -> NodePackageMannegerType {
-    let package_file_path = Path::new(project_dir).join("package.json");
-
-    let mut package_file = match File::open(&package_file_path) {
-        Ok(file) => file,
-        Err(_) => return NodePackageMannegerType::Unknown,
-    };
-
-    let mut package_file_contents = String::new();
-    if let Err(_) = package_file.read_to_string(&mut package_file_contents) {
-        return NodePackageMannegerType::Unknown;
-    }
-
-    let package_json: serde_json::Value = match serde_json::from_str(&package_file_contents) {
-        Ok(json) => json,
-        Err(_) => return NodePackageMannegerType::Unknown,
-    };
+    let _package_file_path = Path::new(project_dir).join("package.json");
 
     if Path::new(project_dir).join("yarn.lock").exists() {
         NodePackageMannegerType::Yarn
@@ -34,10 +11,6 @@ pub fn detect_package_manager(project_dir: &str) -> NodePackageMannegerType {
         NodePackageMannegerType::Pnpm
     } else if Path::new(project_dir).join("package-lock.json").exists() {
         NodePackageMannegerType::Npm
-    } else if package_json["dependencies"].is_object() {
-        NodePackageMannegerType::Npm
-    } else if package_json["devDependencies"].is_object() {
-        NodePackageMannegerType::Yarn
     } else {
         NodePackageMannegerType::Npm
     }
