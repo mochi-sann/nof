@@ -7,31 +7,37 @@ pub enum NodePackageMannegerType {
 #[derive(Debug, PartialEq, Clone)]
 pub struct ReturnCoomad {
     pub script: String,
-    pub args: String,
+    pub args: Vec<String>,
 }
 
 impl NodePackageMannegerType {
     pub fn run_node_scripts(&self, scripts: String) -> ReturnCoomad {
+        let mut command_args: Vec<String> = vec![];
         let package_script = match self {
-            NodePackageMannegerType::Npm => "npm run",
-            NodePackageMannegerType::Yarn => "yarn run",
-            NodePackageMannegerType::Pnpm => "pnpm run",
+            NodePackageMannegerType::Npm => "npm",
+            NodePackageMannegerType::Yarn => "yarn",
+            NodePackageMannegerType::Pnpm => "pnpm",
         };
+        command_args.push("run".to_string());
+        command_args.push(scripts);
 
         return ReturnCoomad {
-            script: package_script.to_string(),
-            args: scripts.to_string(),
+            script: format!("{}", package_script.to_string()),
+            args: command_args,
         };
     }
     pub fn install_command(&self, lib: String) -> ReturnCoomad {
+        let mut command_args: Vec<String> = vec![];
         let package_script = match self {
-            NodePackageMannegerType::Npm => "npm install",
-            NodePackageMannegerType::Yarn => "yarn install",
-            NodePackageMannegerType::Pnpm => "pnpm install",
+            NodePackageMannegerType::Npm => "npm",
+            NodePackageMannegerType::Yarn => "yarn",
+            NodePackageMannegerType::Pnpm => "pnpm",
         };
+        command_args.push("install".to_string());
+        command_args.push(lib.to_string());
         return ReturnCoomad {
             script: package_script.to_string(),
-            args: lib.to_string(),
+            args: command_args,
         };
     }
 }
@@ -39,82 +45,82 @@ impl NodePackageMannegerType {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn test_package_manager_run_command_npm() {
-        let package_manager = NodePackageMannegerType::Npm;
-        assert_eq!(
-            package_manager.run_node_scripts("test".to_string()),
-            ReturnCoomad {
-                script: "npm run".to_string(),
-                args: "test".to_string(),
-            }
-        );
-    }
-    #[test]
-    fn test_package_manager_run_command_yarn() {
-        let package_manager = NodePackageMannegerType::Yarn;
-        assert_eq!(
-            package_manager.run_node_scripts("test".to_string()),
-            ReturnCoomad {
-                script: "yarn run".to_string(),
-                args: "test".to_string(),
-            }
-        );
-    }
-    #[test]
-    fn test_package_manager_run_command_pnpm() {
-        let package_manager = NodePackageMannegerType::Pnpm;
-        assert_eq!(
-            package_manager.run_node_scripts("test".to_string()),
-            ReturnCoomad {
-                script: "pnpm run".to_string(),
-                args: "test".to_string(),
-            }
-        );
-    }
+    mod run_node_scripts {
+        use crate::fn_lib::package_commands::{NodePackageMannegerType, ReturnCoomad};
 
-    #[test]
-    fn test_package_manager_install_command_npm() {
-        let package_manager = NodePackageMannegerType::Npm;
-        assert_eq!(
-            package_manager.install_command("test".to_string()),
-            ReturnCoomad {
-                script: "npm install".to_string(),
-                args: "test".to_string(),
-            }
-        );
+        #[test]
+        fn test_package_manager_run_command_npm() {
+            let package_manager = NodePackageMannegerType::Npm;
+            assert_eq!(
+                package_manager.run_node_scripts("test".to_string()),
+                ReturnCoomad {
+                    script: "npm".to_string(),
+                    args: vec!["run".to_string(), "test".to_string()],
+                }
+            );
+        }
+        // add test for install_command
+
+        #[test]
+        fn test_package_manager_run_command_yarn() {
+            let package_manager = NodePackageMannegerType::Yarn;
+            assert_eq!(
+                package_manager.run_node_scripts("test".to_string()),
+                ReturnCoomad {
+                    script: "yarn".to_string(),
+                    args: vec!["run".to_string(), "test".to_string()],
+                }
+            );
+        }
+        #[test]
+        fn test_package_manager_run_command_pnpm() {
+            let package_manager = NodePackageMannegerType::Pnpm;
+            assert_eq!(
+                package_manager.run_node_scripts("test".to_string()),
+                ReturnCoomad {
+                    script: "pnpm".to_string(),
+                    args: vec!["run".to_string(), "test".to_string()],
+                }
+            );
+        }
     }
-    #[test]
-    fn test_package_manager_install_command_yarn() {
-        let package_manager = NodePackageMannegerType::Yarn;
-        assert_eq!(
-            package_manager.install_command("test".to_string()),
-            ReturnCoomad {
-                script: "yarn install".to_string(),
-                args: "test".to_string(),
-            }
-        );
-    }
-    #[test]
-    fn test_package_manager_install_command_pnpm() {
-        let package_manager = NodePackageMannegerType::Pnpm;
-        assert_eq!(
-            package_manager.install_command("test".to_string()),
-            ReturnCoomad {
-                script: "pnpm install".to_string(),
-                args: "test".to_string(),
-            }
-        );
-    }
-    #[test]
-    fn test_package_manager_install_command_pnpm_none_lib() {
-        let package_manager = NodePackageMannegerType::Pnpm;
-        assert_eq!(
-            package_manager.install_command("".to_string()),
-            ReturnCoomad {
-                script: "pnpm install".to_string(),
-                args: "".to_string(),
-            }
-        );
+    mod install {
+        use crate::fn_lib::package_commands::{NodePackageMannegerType, ReturnCoomad};
+
+        #[test]
+        fn test_package_manager_install_command_npm() {
+            let package_manager = NodePackageMannegerType::Npm;
+            assert_eq!(
+                package_manager.install_command("test".to_string()),
+                ReturnCoomad {
+                    script: "npm".to_string(),
+                    args: vec!["install".to_string(), "test".to_string()],
+                }
+            );
+        }
+
+        // add yarn and pnpm test for install_command test
+        #[test]
+        fn test_package_manager_install_command_yarn() {
+            let package_manager = NodePackageMannegerType::Yarn;
+            assert_eq!(
+                package_manager.install_command("test".to_string()),
+                ReturnCoomad {
+                    script: "yarn".to_string(),
+                    args: vec!["install".to_string(), "test".to_string()],
+                }
+            );
+        }
+        #[test]
+        fn test_package_manager_install_command_pnpm() {
+            let package_manager = NodePackageMannegerType::Pnpm;
+            assert_eq!(
+                package_manager.install_command("test".to_string()),
+                ReturnCoomad {
+                    script: "pnpm".to_string(),
+                    args: vec!["install".to_string(), "test".to_string()],
+                }
+            );
+        }
     }
 }

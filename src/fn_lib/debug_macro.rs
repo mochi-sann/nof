@@ -6,3 +6,11 @@ macro_rules! debug {
     };
 }
 
+#[macro_export]
+#[cfg(not(debug_assertions))]
+macro_rules! debug {
+    ($x:expr) => {
+        std::convert::identity($x)
+    };
+}
+
