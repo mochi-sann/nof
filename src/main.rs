@@ -94,11 +94,7 @@ fn main() {
                 None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
                 Some(v) => v.clone(),
             };
-            let lib_name = match library {
-                None => "",
-                Some(v) => v,
-            };
-            let install_command = package_manager.install_command(lib_name.to_string());
+            let install_command = package_manager.install_command(library.clone());
             debug!(install_command.clone());
             debug!(package_manneger);
             debug!(save_dev);

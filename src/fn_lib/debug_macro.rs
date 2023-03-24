@@ -13,4 +13,3 @@ macro_rules! debug {
         std::convert::identity($x)
     };
 }
-
