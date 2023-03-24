@@ -26,7 +26,7 @@ struct Cli {
 
 #[derive(clap::Subcommand, Debug)]
 enum Commands {
-    #[command(about = "Run node scripts")]
+    #[command(about = "Run node scripts" , visible_aliases = [ "r" , "R" , "run-script"])]
     Run {
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
@@ -37,7 +37,7 @@ enum Commands {
         #[arg(short, long)]
         script: Option<String>,
     },
-    #[command(about = "install npm packages")]
+    #[command(about = "install npm packages", visible_aliases = [ "i" , "I" ])]
     Install {
         /// Name of npm library
         library: Option<String>,
@@ -45,11 +45,16 @@ enum Commands {
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
 
-        #[arg(short, long, value_enum)]
+        #[arg(short, long, value_enum, help = "Specify the package manager")]
         package_manneger: Option<NodePackageMannegerType>,
 
-        #[arg(short = 'D', long, default_value = "false")]
-        save_dev: Option<bool>,
+        #[arg(
+            short = 'D',
+            long,
+            default_value = "false",
+            help = "save package to your `devDependencies`"
+        )]
+        save_dev: bool,
     },
 }
 
