@@ -119,13 +119,6 @@ fn main() {
             let run_script: ReturnCoomad = install_command;
             execute_command(run_script);
         }
-        Commands::Add {
-            library,
-            package_manneger,
-            save_dev,
-            save_peer,
-            save_optional,
-        } => {}
     }
     // get_scripts();
 }

@@ -115,10 +115,10 @@ mod tests {
         fn test_package_manager_install_command_npm() {
             let package_manager = NodePackageMannegerType::Npm;
             assert_eq!(
-                package_manager.install_command(Some("test".to_string()), false, false, false),
+                package_manager.install_command(false, false, false),
                 ReturnCoomad {
                     script: "npm".to_string(),
-                    args: vec!["install".to_string(), "test".to_string()],
+                    args: vec!["install".to_string()],
                 }
             );
         }
@@ -128,10 +128,10 @@ mod tests {
         fn test_package_manager_install_command_yarn() {
             let package_manager = NodePackageMannegerType::Yarn;
             assert_eq!(
-                package_manager.install_command(Some("test".to_string()), false, false, false),
+                package_manager.install_command(false, false, false),
                 ReturnCoomad {
                     script: "yarn".to_string(),
-                    args: vec!["add".to_string(), "test".to_string()],
+                    args: vec!["install".to_string()],
                 }
             );
         }
@@ -139,10 +139,10 @@ mod tests {
         fn test_package_manager_install_command_pnpm() {
             let package_manager = NodePackageMannegerType::Pnpm;
             assert_eq!(
-                package_manager.install_command(Some("test".to_string()), false, false, false),
+                package_manager.install_command(false, false, false),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
-                    args: vec!["install".to_string(), "test".to_string()],
+                    args: vec!["install".to_string()],
                 }
             );
         }
@@ -150,7 +150,7 @@ mod tests {
         fn test_package_manager_install_command_lib_none_yarn() {
             let package_manager = NodePackageMannegerType::Yarn;
             assert_eq!(
-                package_manager.install_command(None, false, false, false),
+                package_manager.install_command(false, false, false),
                 ReturnCoomad {
                     script: "yarn".to_string(),
                     args: vec!["install".to_string()],
@@ -162,7 +162,7 @@ mod tests {
         fn test_package_manager_install_command_lib_none_npm() {
             let package_manager = NodePackageMannegerType::Npm;
             assert_eq!(
-                package_manager.install_command(None, false, false, false),
+                package_manager.install_command(false, false, false),
                 ReturnCoomad {
                     script: "npm".to_string(),
                     args: vec!["install".to_string()],
@@ -173,7 +173,7 @@ mod tests {
         fn test_package_manager_install_command_lib_none_pnpm() {
             let package_manager = NodePackageMannegerType::Pnpm;
             assert_eq!(
-                package_manager.install_command(None, false, false, false),
+                package_manager.install_command(false, false, false),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
                     args: vec!["install".to_string()],
@@ -188,14 +188,10 @@ mod tests {
         fn test_package_manager_install_save_dev_npm() {
             let package_manager = NodePackageMannegerType::Npm;
             assert_eq!(
-                package_manager.install_command(Some("test".to_string()), true, false, false),
+                package_manager.install_command(true, false, false),
                 ReturnCoomad {
                     script: "npm".to_string(),
-                    args: vec![
-                        "install".to_string(),
-                        "--save-dev".to_string(),
-                        "test".to_string()
-                    ],
+                    args: vec!["install".to_string(), "--save-dev".to_string(),],
                 }
             );
         }
@@ -203,10 +199,10 @@ mod tests {
         fn test_package_manager_install_save_dev_yarn() {
             let package_manager = NodePackageMannegerType::Yarn;
             assert_eq!(
-                package_manager.install_command(Some("test".to_string()), true, false, false),
+                package_manager.install_command(true, false, false),
                 ReturnCoomad {
                     script: "yarn".to_string(),
-                    args: vec!["add".to_string(), "-D".to_string(), "test".to_string()],
+                    args: vec!["install".to_string(), "-D".to_string()],
                 }
             );
         }
@@ -214,14 +210,10 @@ mod tests {
         fn test_package_manager_install_save_dev_pnpm() {
             let package_manager = NodePackageMannegerType::Pnpm;
             assert_eq!(
-                package_manager.install_command(Some("test".to_string()), true, false, false),
+                package_manager.install_command(true, false, false),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
-                    args: vec![
-                        "install".to_string(),
-                        "--save-dev".to_string(),
-                        "test".to_string()
-                    ],
+                    args: vec!["install".to_string(), "--save-dev".to_string(),],
                 }
             );
         }
