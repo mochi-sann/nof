@@ -1,3 +1,7 @@
+use crate::debug;
+
+use super::command_list::{NpmCoomands, COMMAND_LIST};
+
 #[derive(Debug, PartialEq, clap::ValueEnum, Clone)]
 pub enum NodePackageMannegerType {
     Npm,
@@ -11,16 +15,21 @@ pub struct ReturnCoomad {
 }
 
 impl NodePackageMannegerType {
+    pub fn get_commands(&self) -> NpmCoomands {
+        match self {
+            NodePackageMannegerType::Yarn => COMMAND_LIST.yarn,
+            NodePackageMannegerType::Npm => COMMAND_LIST.npm,
+            NodePackageMannegerType::Pnpm => COMMAND_LIST.pnpm,
+        }
+    }
+
     pub fn run_node_scripts(&self, scripts: String) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
-        let package_script = match self {
-            NodePackageMannegerType::Npm => "npm",
-            NodePackageMannegerType::Yarn => "yarn",
-            NodePackageMannegerType::Pnpm => "pnpm",
-        };
+        let package_script = self.get_commands().command_name;
         command_args.push("run".to_string());
         command_args.push(scripts);
 
+        debug!(package_script);
         return ReturnCoomad {
             script: format!("{}", package_script.to_string()),
             args: command_args,
@@ -29,58 +38,28 @@ impl NodePackageMannegerType {
 
     pub fn install_command(
         &self,
-        lib: Option<String>,
         save_dev: bool,
         save_peer: bool,
         save_optional: bool,
     ) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
-        let package_script = match self {
-            NodePackageMannegerType::Npm => "npm",
-            NodePackageMannegerType::Yarn => "yarn",
-            NodePackageMannegerType::Pnpm => "pnpm",
-        };
-        let install_command = match self {
-            NodePackageMannegerType::Npm => "install",
-            NodePackageMannegerType::Yarn => match lib {
-                None => "install",
-                _ => "add",
-            },
-            NodePackageMannegerType::Pnpm => "install",
-        };
+        let package_script = self.get_commands().command_name;
+        let install_command = self.get_commands().isntall;
         command_args.push(install_command.to_string());
 
         match save_dev {
-            true => match self {
-                NodePackageMannegerType::Npm => command_args.push("--save-dev".to_string()),
-                NodePackageMannegerType::Yarn => command_args.push("-D".to_string()),
-                NodePackageMannegerType::Pnpm => command_args.push("--save-dev".to_string()),
-            },
+            true => command_args.push(self.get_commands().save_dev.to_string()),
             false => {}
         }
         match save_peer {
-            true => match self {
-                NodePackageMannegerType::Npm => command_args.push("--save-peer".to_string()),
-                NodePackageMannegerType::Yarn => command_args.push("-P".to_string()),
-                NodePackageMannegerType::Pnpm => command_args.push("--save-peer".to_string()),
-            },
+            true => command_args.push(self.get_commands().save_peer.to_string()),
             false => {}
         }
         match save_optional {
-            true => match self {
-                NodePackageMannegerType::Npm => command_args.push("--save-optional".to_string()),
-                NodePackageMannegerType::Yarn => command_args.push("-O".to_string()),
-                NodePackageMannegerType::Pnpm => command_args.push("--save-optional".to_string()),
-            },
+            true => command_args.push(self.get_commands().save_optional.to_string()),
             false => {}
         }
 
-        match lib {
-            Some(v) => {
-                command_args.push(v);
-            }
-            None => {}
-        }
         return ReturnCoomad {
             script: package_script.to_string(),
             args: command_args,
@@ -227,11 +206,7 @@ mod tests {
                 package_manager.install_command(Some("test".to_string()), true, false, false),
                 ReturnCoomad {
                     script: "yarn".to_string(),
-                    args: vec![
-                        "add".to_string(),
-                        "-D".to_string(),
-                        "test".to_string()
-                    ],
+                    args: vec!["add".to_string(), "-D".to_string(), "test".to_string()],
                 }
             );
         }

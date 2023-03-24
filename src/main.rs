@@ -37,11 +37,8 @@ enum Commands {
         #[arg(short, long)]
         script: Option<String>,
     },
-    #[command(about = "install npm packages", visible_aliases = [ "i" , "I" ])]
+    #[command(about = "Installs all dependencies", visible_aliases = [ "i" , "I" ])]
     Install {
-        /// Name of npm library
-        library: Option<String>,
-
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
 
@@ -103,7 +100,6 @@ fn main() {
             save_dev,
             save_peer,
             save_optional,
-            library,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
             let package_manager = match package_manneger {
@@ -111,7 +107,6 @@ fn main() {
                 Some(v) => v.clone(),
             };
             let install_command = package_manager.install_command(
-                library.clone(),
                 save_dev.clone(),
                 save_peer.clone(),
                 save_optional.clone(),
@@ -119,12 +114,18 @@ fn main() {
             debug!(install_command.clone());
             debug!(package_manneger);
             debug!(save_dev);
-            debug!(library);
             debug!(install_command.clone());
 
             let run_script: ReturnCoomad = install_command;
             execute_command(run_script);
         }
+        Commands::Add {
+            library,
+            package_manneger,
+            save_dev,
+            save_peer,
+            save_optional,
+        } => {}
     }
     // get_scripts();
 }
