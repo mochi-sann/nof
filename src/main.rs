@@ -55,6 +55,20 @@ enum Commands {
             help = "save package to your `devDependencies`"
         )]
         save_dev: bool,
+        #[arg(
+            short = 'P',
+            long,
+            default_value = "false",
+            help = "save package to your `peerDependencies`"
+        )]
+        save_peer: bool,
+        #[arg(
+            short = 'O',
+            long,
+            default_value = "false",
+            help = "save package to your `optionalDependencies`"
+        )]
+        save_optional: bool,
     },
 }
 
@@ -87,6 +101,8 @@ fn main() {
             target_path,
             package_manneger,
             save_dev,
+            save_peer,
+            save_optional,
             library,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
@@ -94,7 +110,12 @@ fn main() {
                 None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
                 Some(v) => v.clone(),
             };
-            let install_command = package_manager.install_command(library.clone());
+            let install_command = package_manager.install_command(
+                library.clone(),
+                save_dev.clone(),
+                save_peer.clone(),
+                save_optional.clone(),
+            );
             debug!(install_command.clone());
             debug!(package_manneger);
             debug!(save_dev);
