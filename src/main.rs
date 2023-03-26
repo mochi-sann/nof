@@ -46,6 +46,14 @@ enum Commands {
         package_manneger: Option<NodePackageMannegerType>,
 
         #[arg(
+            short = 'F',
+            long,
+            default_value = "false",
+            help = "don't generate a lockfile and fail if an update is needed"
+        )]
+        frozen_lockfile: bool,
+
+        #[arg(
             short = 'D',
             long,
             default_value = "false",
@@ -133,6 +141,7 @@ fn main() {
             save_dev,
             save_peer,
             save_optional,
+            frozen_lockfile,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
             let package_manager = match package_manneger {
@@ -143,6 +152,7 @@ fn main() {
                 save_dev.clone(),
                 save_peer.clone(),
                 save_optional.clone(),
+                *frozen_lockfile,
             );
             debug!(install_command.clone());
             debug!(package_manneger);

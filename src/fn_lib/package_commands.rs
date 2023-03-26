@@ -41,6 +41,7 @@ impl NodePackageMannegerType {
         save_dev: bool,
         save_peer: bool,
         save_optional: bool,
+        frozen_lockfile: bool,
     ) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
         let package_script = self.get_commands().command_name;
@@ -57,6 +58,10 @@ impl NodePackageMannegerType {
         }
         match save_optional {
             true => command_args.push(self.get_commands().save_optional.to_string()),
+            false => {}
+        }
+        match frozen_lockfile {
+            true => command_args.push(self.get_commands().frozen_lockfile.to_string()),
             false => {}
         }
 
@@ -150,7 +155,7 @@ mod tests {
         fn test_package_manager_install_command_npm() {
             let package_manager = NodePackageMannegerType::Npm;
             assert_eq!(
-                package_manager.install_command(false, false, false),
+                package_manager.install_command(false, false, false, false),
                 ReturnCoomad {
                     script: "npm".to_string(),
                     args: vec!["install".to_string()],
@@ -163,7 +168,7 @@ mod tests {
         fn test_package_manager_install_command_yarn() {
             let package_manager = NodePackageMannegerType::Yarn;
             assert_eq!(
-                package_manager.install_command(false, false, false),
+                package_manager.install_command(false, false, false, false),
                 ReturnCoomad {
                     script: "yarn".to_string(),
                     args: vec!["install".to_string()],
@@ -174,7 +179,7 @@ mod tests {
         fn test_package_manager_install_command_pnpm() {
             let package_manager = NodePackageMannegerType::Pnpm;
             assert_eq!(
-                package_manager.install_command(false, false, false),
+                package_manager.install_command(false, false, false, false),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
                     args: vec!["install".to_string()],
@@ -185,7 +190,7 @@ mod tests {
         fn test_package_manager_install_command_lib_none_yarn() {
             let package_manager = NodePackageMannegerType::Yarn;
             assert_eq!(
-                package_manager.install_command(false, false, false),
+                package_manager.install_command(false, false, false, false),
                 ReturnCoomad {
                     script: "yarn".to_string(),
                     args: vec!["install".to_string()],
@@ -197,7 +202,7 @@ mod tests {
         fn test_package_manager_install_command_lib_none_npm() {
             let package_manager = NodePackageMannegerType::Npm;
             assert_eq!(
-                package_manager.install_command(false, false, false),
+                package_manager.install_command(false, false, false, false),
                 ReturnCoomad {
                     script: "npm".to_string(),
                     args: vec!["install".to_string()],
@@ -208,7 +213,7 @@ mod tests {
         fn test_package_manager_install_command_lib_none_pnpm() {
             let package_manager = NodePackageMannegerType::Pnpm;
             assert_eq!(
-                package_manager.install_command(false, false, false),
+                package_manager.install_command(false, false, false, false),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
                     args: vec!["install".to_string()],
@@ -223,7 +228,7 @@ mod tests {
         fn test_package_manager_install_save_dev_npm() {
             let package_manager = NodePackageMannegerType::Npm;
             assert_eq!(
-                package_manager.install_command(true, false, false),
+                package_manager.install_command(true, false, false, false),
                 ReturnCoomad {
                     script: "npm".to_string(),
                     args: vec!["install".to_string(), "--save-dev".to_string(),],
@@ -231,10 +236,21 @@ mod tests {
             );
         }
         #[test]
+        fn test_package_manager_install_frozen_install_npm() {
+            let package_manager = NodePackageMannegerType::Npm;
+            assert_eq!(
+                package_manager.install_command(false, false, false, true),
+                ReturnCoomad {
+                    script: "npm".to_string(),
+                    args: vec!["install".to_string(), "--frozen-lockfile".to_string(),],
+                }
+            );
+        }
+        #[test]
         fn test_package_manager_install_save_dev_yarn() {
             let package_manager = NodePackageMannegerType::Yarn;
             assert_eq!(
-                package_manager.install_command(true, false, false),
+                package_manager.install_command(true, false, false, false),
                 ReturnCoomad {
                     script: "yarn".to_string(),
                     args: vec!["install".to_string(), "-D".to_string()],
@@ -245,7 +261,7 @@ mod tests {
         fn test_package_manager_install_save_dev_pnpm() {
             let package_manager = NodePackageMannegerType::Pnpm;
             assert_eq!(
-                package_manager.install_command(true, false, false),
+                package_manager.install_command(true, false, false, false),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
                     args: vec!["install".to_string(), "--save-dev".to_string(),],
