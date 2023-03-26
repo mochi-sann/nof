@@ -68,14 +68,16 @@ enum Commands {
         save_optional: bool,
     },
 
-    #[command(about = "add library", visible_aliases = [ "a" , "A" ])]
+    #[command(about = "Installs a package", visible_aliases = [ "a" , "A" ])]
     Add {
         #[arg(short, long, default_value = "./package.json")]
         target_path: String,
         #[arg(short, long, value_enum, help = "Specify the package manager")]
         package_manneger: Option<NodePackageMannegerType>,
 
-        lib: Vec<String>,
+        /// Name of package to install
+        packages: Vec<String>,
+
         #[arg(
             short = 'D',
             long,
@@ -152,7 +154,7 @@ fn main() {
         }
         Commands::Add {
             target_path,
-            lib,
+            packages: lib,
             save_dev,
             save_optional,
             save_peer,
