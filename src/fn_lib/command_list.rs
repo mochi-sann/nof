@@ -28,7 +28,7 @@ pub const NPM: NpmCoomands = NpmCoomands {
     command_name: "npm",
     run: "run",
     isntall: "install",
-    add: "add",
+    add: "install",
     save_dev: "--save-dev",
     save_peer: "--save-peer",
     save_optional: "--save-optional",
