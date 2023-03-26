@@ -67,6 +67,37 @@ enum Commands {
         )]
         save_optional: bool,
     },
+
+    #[command(about = "add library", visible_aliases = [ "a" , "A" ])]
+    Add {
+        #[arg(short, long, default_value = "./package.json")]
+        target_path: String,
+        #[arg(short, long, value_enum, help = "Specify the package manager")]
+        package_manneger: Option<NodePackageMannegerType>,
+
+        lib: Vec<String>,
+        #[arg(
+            short = 'D',
+            long,
+            default_value = "false",
+            help = "save package to your `devDependencies`"
+        )]
+        save_dev: bool,
+        #[arg(
+            short = 'P',
+            long,
+            default_value = "false",
+            help = "save package to your `peerDependencies`"
+        )]
+        save_peer: bool,
+        #[arg(
+            short = 'O',
+            long,
+            default_value = "false",
+            help = "save package to your `optionalDependencies`"
+        )]
+        save_optional: bool,
+    },
 }
 
 fn main() {
@@ -118,6 +149,23 @@ fn main() {
 
             let run_script: ReturnCoomad = install_command;
             execute_command(run_script);
+        }
+        Commands::Add {
+            target_path,
+            lib,
+            save_dev,
+            save_optional,
+            save_peer,
+            package_manneger,
+        } => {
+            let folder_path = get_directory_from_file_path(&target_path);
+            let package_manager = match package_manneger {
+                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
+                Some(v) => v.clone(),
+            };
+            let install_command =
+                package_manager.add(lib.to_vec(), *save_dev, *save_peer, *save_optional);
+            debug!(install_command.clone());
         }
     }
     // get_scripts();

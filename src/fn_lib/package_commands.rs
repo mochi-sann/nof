@@ -65,6 +65,41 @@ impl NodePackageMannegerType {
             args: command_args,
         };
     }
+    pub fn add(
+        &self,
+        lib: Vec<String>,
+        save_dev: bool,
+        save_peer: bool,
+        save_optional: bool,
+    ) -> ReturnCoomad {
+        let mut command_args: Vec<String> = vec![];
+        let package_script = self.get_commands().command_name;
+        let add_command = self.get_commands().add;
+        command_args.push(add_command.to_string());
+        // command_args.push(package_name);
+        debug!(&lib);
+        match save_dev {
+            true => command_args.push(self.get_commands().save_dev.to_string()),
+            false => {}
+        }
+        match save_peer {
+            true => command_args.push(self.get_commands().save_peer.to_string()),
+            false => {}
+        }
+        match save_optional {
+            true => command_args.push(self.get_commands().save_optional.to_string()),
+            false => {}
+        }
+
+        for package in &lib {
+            command_args.push(package.to_string());
+        }
+
+        return ReturnCoomad {
+            script: package_script.to_string(),
+            args: command_args,
+        };
+    }
 }
 
 #[cfg(test)]
