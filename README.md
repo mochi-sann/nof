@@ -18,8 +18,10 @@ To use RNSR, run the following command:
 Usage: nof <COMMAND>
 
 Commands:
-  run   Run node scripts
-  help  Print this message or the help of the given subcommand(s)
+  run      Run node scripts [aliases: r, R, run-script]
+  install  Installs all dependencies [aliases: i, I]
+  add      Installs a package [aliases: a, A]
+  help     Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help     Print help
