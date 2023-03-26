@@ -30,7 +30,6 @@ pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     let options = SkimOptionsBuilder::default()
         .height(Some("30%"))
         .multi(true)
-        .layout("reverse")
         .preview(Some("")) // preview should be specified to enable preview window
         .build()
         .unwrap();
@@ -50,9 +49,9 @@ pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
         .unwrap_or_else(Vec::new);
 
     let mut return_value: Vec<String> = Vec::new();
-    print!("\x1B[?25h");
     for item in selected_items.iter() {
         return_value.push(Cow::Borrowed(&item.output()).to_string())
     }
+    println!("");
     return return_value;
 }
