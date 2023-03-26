@@ -1,5 +1,3 @@
-use std::os::unix::process::CommandExt;
-
 use std::process::Command;
 
 use crate::debug;
@@ -10,5 +8,8 @@ pub fn execute_command(command: ReturnCoomad) {
     debug!(command.clone());
 
     std::process::Command::new("clear").status().unwrap();
-    Command::new(command.script).args(command.args).exec();
+    Command::new(command.script)
+        .args(command.args)
+        .status()
+        .unwrap();
 }
