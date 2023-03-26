@@ -9,7 +9,8 @@ repository = "https://github.com/mochi-sann/nof"
 documentation ="https://github.com/mochi-sann/nof"
 description = "NOF is an open-source tool written in Rust that allows users to search and execute Node.js scripts using fzf"
 exclude = [
-  "test_files/*"
+  "test_files/*",
+  ".github/*"
 ]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
