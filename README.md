@@ -13,7 +13,7 @@ $ cargo install nof
 
 ## Usage
 
-To use RNSR, run the following command:
+To use nof, run the following command:
 ```bash
 Usage: nof <COMMAND>
 
