@@ -30,7 +30,7 @@ struct Cli {
 #[derive(clap::Subcommand, Debug)]
 enum Commands {
     Completion {
-        #[clap(long, short, value_enum)]
+        #[clap(long, short, value_enum , about = "Generates a script for completion")]
         shell: Shell,
     },
 
@@ -190,9 +190,10 @@ fn main() {
                 None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
                 Some(v) => v.clone(),
             };
-            let install_command =
+            let add_command =
                 package_manager.add(lib.to_vec(), *save_dev, *save_peer, *save_optional);
-            debug!(install_command.clone());
+            debug!(add_command.clone());
+            execute_command(add_command);
         }
     }
     // get_scripts();
