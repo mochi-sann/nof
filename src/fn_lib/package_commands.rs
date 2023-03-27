@@ -105,6 +105,22 @@ impl NodePackageMannegerType {
             args: command_args,
         };
     }
+    pub fn remove(&self, lib: Vec<String>) -> ReturnCoomad {
+        let mut command_args: Vec<String> = vec![];
+        let package_script = self.get_commands().command_name;
+        command_args.push(self.get_commands().remove.to_string());
+        // command_args.push(package_name);
+        debug!(&lib);
+
+        for package in &lib {
+            command_args.push(package.to_string());
+        }
+
+        return ReturnCoomad {
+            script: package_script.to_string(),
+            args: command_args,
+        };
+    }
 }
 
 #[cfg(test)]
@@ -363,6 +379,43 @@ mod tests {
                         "hoge".to_string(),
                         "fuga".to_string()
                     ],
+                }
+            );
+        }
+    }
+    mod remove {
+        use crate::fn_lib::package_commands::{NodePackageMannegerType, ReturnCoomad};
+
+        #[test]
+        fn remove_pnpm() {
+            let package_manager = NodePackageMannegerType::Pnpm;
+            assert_eq!(
+                package_manager.remove(vec!["hoge".to_string(), "test".to_string()]),
+                ReturnCoomad {
+                    script: "pnpm".to_string(),
+                    args: vec!["remove".to_string(), "hoge".to_string(), "test".to_string()],
+                }
+            );
+        }
+        #[test]
+        fn remove_npm() {
+            let package_manager = NodePackageMannegerType::Npm;
+            assert_eq!(
+                package_manager.remove(vec!["hoge".to_string(), "test".to_string()]),
+                ReturnCoomad {
+                    script: "npm".to_string(),
+                    args: vec!["remove".to_string(), "hoge".to_string(), "test".to_string()],
+                }
+            );
+        }
+        #[test]
+        fn remove_yarn() {
+            let package_manager = NodePackageMannegerType::Yarn;
+            assert_eq!(
+                package_manager.remove(vec!["hoge".to_string(), "test".to_string()]),
+                ReturnCoomad {
+                    script: "yarn".to_string(),
+                    args: vec!["remove".to_string(), "hoge".to_string(), "test".to_string()],
                 }
             );
         }

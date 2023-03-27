@@ -117,6 +117,16 @@ enum Commands {
         )]
         save_optional: bool,
     },
+    #[command(about = "remove a package", visible_aliases =  [ "rm" ] )]
+    Remove {
+        /// Name of package to remove
+        packages: Vec<String>,
+
+        #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
+        target_path: String,
+        #[arg(short, long, value_enum, help = "Specify the package manager")]
+        package_manneger: Option<NodePackageMannegerType>,
+    },
 }
 
 fn print_completions<G: Generator>(gen: G, cmd: &mut Command) {
@@ -195,6 +205,24 @@ fn main() {
                 package_manager.add(lib.to_vec(), *save_dev, *save_peer, *save_optional);
             debug!(add_command.clone());
             execute_command(add_command);
+        }
+        Commands::Remove {
+            packages,
+            package_manneger,
+            target_path,
+        } => {
+            let folder_path = get_directory_from_file_path(&target_path);
+            let package_manager = match package_manneger {
+                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
+                Some(v) => v.clone(),
+            };
+            let install_command = package_manager.remove(packages.to_vec());
+            debug!(install_command.clone());
+            debug!(package_manneger);
+            debug!(install_command.clone());
+
+            let run_script: ReturnCoomad = install_command;
+            execute_command(run_script);
         }
     }
     // get_scripts();
