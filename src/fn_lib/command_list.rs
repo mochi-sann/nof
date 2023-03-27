@@ -7,6 +7,7 @@ pub struct NpmCoomands<'a> {
     pub save_peer: &'a str,
     pub save_optional: &'a str,
     pub frozen_lockfile: &'a str,
+    pub remove: &'a str,
 }
 
 pub struct CommandList<'a> {
@@ -24,6 +25,7 @@ pub const YARN: NpmCoomands = NpmCoomands {
     save_peer: "-P",
     save_optional: "-O",
     frozen_lockfile: "--frozen-lockfile",
+    remove: "remove",
 };
 
 pub const NPM: NpmCoomands = NpmCoomands {
@@ -35,6 +37,7 @@ pub const NPM: NpmCoomands = NpmCoomands {
     save_peer: "--save-peer",
     save_optional: "--save-optional",
     frozen_lockfile: "--frozen-lockfile",
+    remove: "remove",
 };
 
 pub const PNPM: NpmCoomands = NpmCoomands {
@@ -46,6 +49,7 @@ pub const PNPM: NpmCoomands = NpmCoomands {
     save_peer: "--save-peer",
     save_optional: "--save-optional",
     frozen_lockfile: "--frozen-lockfile",
+    remove: "remove",
 };
 
 pub const COMMAND_LIST: CommandList = CommandList {
