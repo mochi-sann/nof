@@ -2,7 +2,10 @@ mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
 
-use clap::Parser;
+use std::io;
+
+use clap::{Command, CommandFactory, Parser, ValueHint};
+use clap_complete::{generate, Generator, Shell};
 use fn_lib::{
     get_directory_from_file_path::get_directory_from_file_path,
     package_commands::{NodePackageMannegerType, ReturnCoomad},
@@ -26,9 +29,14 @@ struct Cli {
 
 #[derive(clap::Subcommand, Debug)]
 enum Commands {
+    Completion {
+        #[clap(long, short, value_enum)]
+        shell: Shell,
+    },
+
     #[command(about = "Run node scripts" , visible_aliases = [ "r" , "R" , "run-script"])]
     Run {
-        #[arg(short, long, default_value = "./package.json")]
+        #[arg(short, long, default_value = "./package.json", value_hint = ValueHint::FilePath)]
         target_path: String,
 
         #[arg(short, long, value_enum)]
@@ -39,7 +47,7 @@ enum Commands {
     },
     #[command(about = "Installs all dependencies", visible_aliases = [ "i" , "I" ])]
     Install {
-        #[arg(short, long, default_value = "./package.json")]
+        #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
         target_path: String,
 
         #[arg(short, long, value_enum, help = "Specify the package manager")]
@@ -78,7 +86,7 @@ enum Commands {
 
     #[command(about = "Installs a package", visible_aliases = [ "a" , "A" ])]
     Add {
-        #[arg(short, long, default_value = "./package.json")]
+        #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
         target_path: String,
         #[arg(short, long, value_enum, help = "Specify the package manager")]
         package_manneger: Option<NodePackageMannegerType>,
@@ -110,10 +118,17 @@ enum Commands {
     },
 }
 
+fn print_completions<G: Generator>(gen: G, cmd: &mut Command) {
+    generate(gen, cmd, cmd.get_name().to_string(), &mut io::stdout());
+}
+
 fn main() {
     let cli = Cli::parse();
-
     match &cli.command {
+        Commands::Completion { shell } => {
+            let mut cmd = Cli::command();
+            print_completions(*shell, &mut cmd);
+        }
         Commands::Run {
             target_path,
             package_manneger: package_manneger_select,
