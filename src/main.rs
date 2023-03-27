@@ -29,8 +29,9 @@ struct Cli {
 
 #[derive(clap::Subcommand, Debug)]
 enum Commands {
+    #[command(about = "Generates a script for completion")]
     Completion {
-        #[clap(long, short, value_enum, about = "Generates a script for completion")]
+        #[clap(long, short, value_enum)]
         shell: Shell,
     },
 
