@@ -31,4 +31,10 @@ Options:
 
 This will launch fzf, which allows you to search for Node.js scripts. Once you've selected a script from the search results, it will be executed.
 
-
+## setup auto completion
+```bash
+# zsh in ~/.zshrc
+nof completion --shell=zsh > /usr/local/share/zsh/site-functions/_nof
+# fizh 
+nof completion --shell=fish > ~/.config/fish/completions/nof.fish
+```
