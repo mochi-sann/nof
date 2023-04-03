@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use super::{package_commands::NodePackageMannegerType, type_node_pac::detect_package_manager};
 
@@ -19,5 +19,21 @@ pub fn check_installde_package_maneger(
             );
             std::process::exit(1);
         }
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::PathBuf;
+
+    #[test]
+    fn test_check_installed_package_manager() {
+        let folder_path = Some(PathBuf::from("/path/to/folder"));
+        let package_manager = NodePackageMannegerType::Npm; // Set the package manager to Npm for this test
+        let result =
+            check_installde_package_maneger(&Some(package_manager.clone()), folder_path.as_deref());
+
+        // Check that the result matches the expected package manager
+        assert_eq!(result, package_manager);
     }
 }
