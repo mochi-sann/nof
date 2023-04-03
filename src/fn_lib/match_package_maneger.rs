@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use super::{package_commands::NodePackageMannegerType, type_node_pac::detect_package_manager};
 
@@ -14,7 +14,7 @@ pub fn check_installde_package_maneger(
         true => package_manager,
         false => {
             println!(
-                "Package {} manager not installed",
+                "{} is not installed",
                 package_manager.get_commands().command_name
             );
             std::process::exit(1);
