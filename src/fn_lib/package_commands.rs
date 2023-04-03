@@ -1,3 +1,5 @@
+use std::process::Command;
+
 use crate::debug;
 
 use super::command_list::{NpmCoomands, COMMAND_LIST};
@@ -21,6 +23,14 @@ impl NodePackageMannegerType {
             NodePackageMannegerType::Npm => COMMAND_LIST.npm,
             NodePackageMannegerType::Pnpm => COMMAND_LIST.pnpm,
         }
+    }
+    pub fn is_installed_command(&self) -> bool {
+        let output = Command::new("which")
+            .arg(self.get_commands().command_name)
+            .output()
+            .expect("failed to execute process");
+
+        output.status.success()
     }
 
     pub fn run_node_scripts(&self, scripts: String) -> ReturnCoomad {

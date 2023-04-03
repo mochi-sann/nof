@@ -8,9 +8,9 @@ use clap::{Command, CommandFactory, Parser, ValueHint};
 use clap_complete::{generate, Generator, Shell};
 use fn_lib::{
     get_directory_from_file_path::get_directory_from_file_path,
+    match_package_maneger::check_installde_package_maneger,
     package_commands::{NodePackageMannegerType, ReturnCoomad},
     run_command::execute_command,
-    type_node_pac::detect_package_manager,
 };
 use read_package_json::get_scripts;
 
@@ -153,10 +153,8 @@ fn main() {
                 Some(v) => vec![v.clone()],
             };
 
-            let package_manager = match package_manneger_select {
-                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
-                Some(v) => v.clone(),
-            };
+            let package_manager =
+                check_installde_package_maneger(package_manneger_select, folder_path);
             let run_scripts = package_manager.run_node_scripts(script[0].to_string());
 
             execute_command(run_scripts);
@@ -170,10 +168,8 @@ fn main() {
             frozen_lockfile,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
-            let package_manager = match package_manneger {
-                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
-                Some(v) => v.clone(),
-            };
+            let package_manager = check_installde_package_maneger(package_manneger, folder_path);
+
             let install_command = package_manager.install_command(
                 save_dev.clone(),
                 save_peer.clone(),
@@ -197,10 +193,7 @@ fn main() {
             package_manneger,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
-            let package_manager = match package_manneger {
-                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
-                Some(v) => v.clone(),
-            };
+            let package_manager = check_installde_package_maneger(package_manneger, folder_path);
             let add_command =
                 package_manager.add(lib.to_vec(), *save_dev, *save_peer, *save_optional);
             debug!(add_command.clone());
@@ -212,10 +205,7 @@ fn main() {
             target_path,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
-            let package_manager = match package_manneger {
-                None => detect_package_manager(&folder_path.expect("./").to_str().unwrap()),
-                Some(v) => v.clone(),
-            };
+            let package_manager = check_installde_package_maneger(package_manneger, folder_path);
             let install_command = package_manager.remove(packages.to_vec());
             debug!(install_command.clone());
             debug!(package_manneger);
