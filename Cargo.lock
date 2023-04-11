@@ -655,7 +655,7 @@ dependencies = [
 
 [[package]]
 name = "nof"
-version = "0.5.1"
+version = "0.6.1"
 dependencies = [
  "clap 4.1.13",
  "clap_complete",
