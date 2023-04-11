@@ -28,9 +28,8 @@ impl SkimItem for ScriptItems {
 
 pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     let options = SkimOptionsBuilder::default()
-        .height(Some("30%"))
+        // .height(Some("30%"))
         .multi(true)
-        .preview(Some("")) // preview should be specified to enable preview window
         .build()
         .unwrap();
 
