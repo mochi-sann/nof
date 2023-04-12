@@ -2,7 +2,7 @@ mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
 
-use std::io;
+use std::{io, path::PathBuf};
 
 use clap::{Command, CommandFactory, Parser, ValueHint};
 use clap_complete::{generate, Generator, Shell};
@@ -38,7 +38,7 @@ enum Commands {
     #[command(about = "Run node scripts" , visible_aliases = [ "r" , "R" , "run-script"])]
     Run {
         #[arg(short, long, default_value = "./package.json", value_hint = ValueHint::FilePath)]
-        target_path: String,
+        target_path: PathBuf,
 
         #[arg(short, long, value_enum)]
         package_manneger: Option<NodePackageMannegerType>,
@@ -49,7 +49,7 @@ enum Commands {
     #[command(about = "Installs all dependencies", visible_aliases = [ "i" , "I" ])]
     Install {
         #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
-        target_path: String,
+        target_path: PathBuf,
 
         #[arg(short, long, value_enum, help = "Specify the package manager")]
         package_manneger: Option<NodePackageMannegerType>,
@@ -88,7 +88,7 @@ enum Commands {
     #[command(about = "Installs a package", visible_aliases = [ "a" , "A" ])]
     Add {
         #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
-        target_path: String,
+        target_path: PathBuf,
         #[arg(short, long, value_enum, help = "Specify the package manager")]
         package_manneger: Option<NodePackageMannegerType>,
 
@@ -123,7 +123,7 @@ enum Commands {
         packages: Vec<String>,
 
         #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
-        target_path: String,
+        target_path: PathBuf,
         #[arg(short, long, value_enum, help = "Specify the package manager")]
         package_manneger: Option<NodePackageMannegerType>,
     },
@@ -146,7 +146,7 @@ fn main() {
             script: command_scipts,
         } => {
             let folder_path = get_directory_from_file_path(&target_path);
-            let scripts_list = get_scripts(target_path.to_string());
+            let scripts_list = get_scripts(target_path);
 
             let script = match command_scipts {
                 None => fzf_scripts::fzf_scipts(scripts_list),

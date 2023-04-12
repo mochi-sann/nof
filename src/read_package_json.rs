@@ -1,8 +1,8 @@
 use serde_json::Value;
-use std::fs;
+use std::{fs, path::Path};
 
 // パッケージのpackage.jsonからscriptsを取得する関数
-pub fn get_scripts(file_path: String) -> Vec<(String, String)> {
+pub fn get_scripts(file_path: &Path) -> Vec<(String, String)> {
     // パッケージのpackage.jsonを取得
     let data = get_package_json(file_path);
     // scriptsオブジェクトを取得
@@ -19,7 +19,7 @@ pub fn get_scripts(file_path: String) -> Vec<(String, String)> {
 }
 
 // パッケージのpackage.jsonをパースする関数
-fn get_package_json(file_path: String) -> Value {
+fn get_package_json(file_path: &Path) -> Value {
     // ファイルの内容を文字列として取得
     let contents = fs::read_to_string(&file_path).expect("Something went wrong reading the file");
 
@@ -33,7 +33,7 @@ mod tests {
     #[test]
     fn test_get_scripts() {
         // テスト用のpackage.jsonファイルのパス
-        let file_path = String::from("./test_files/aaa.json");
+        let file_path = Path::new("./test_files/aaa.json");
 
         // テスト用のscripts
         let expected_scripts = vec![
@@ -57,7 +57,7 @@ mod tests {
     #[test]
     fn test_get_scripts_2() {
         // テスト用のpackage.jsonファイルのパス
-        let file_path = String::from("./test_files/bbb.json");
+        let file_path = Path::new("./test_files/bbb.json");
 
         // テスト用のscripts
         let expected_scripts = vec![
