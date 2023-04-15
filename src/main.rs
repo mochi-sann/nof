@@ -127,6 +127,17 @@ enum Commands {
         #[arg(short, long, value_enum, help = "Specify the package manager")]
         package_manneger: Option<NodePackageMannegerType>,
     },
+
+    #[command(about = "Run a command from a local or remote npm package", visible_aliases =  [ "e" , "exec"  ,"E"  ] )]
+    ExecuteCommand {
+        #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
+        target_path: PathBuf,
+        #[arg(short, long, value_enum, help = "Specify the package manager")]
+        package_manneger: Option<NodePackageMannegerType>,
+
+        /// Name of package to run
+        packages: Vec<String>,
+    },
 }
 
 fn print_completions<G: Generator>(gen: G, cmd: &mut Command) {
@@ -212,6 +223,16 @@ fn main() {
             debug!(install_command.clone());
 
             let run_script: ReturnCoomad = install_command;
+            execute_command(run_script);
+        }
+        Commands::ExecuteCommand {
+            target_path,
+            package_manneger,
+            packages,
+        } => {
+            let folder_path = get_directory_from_file_path(&target_path);
+            let package_manager = check_installde_package_maneger(package_manneger, folder_path);
+            let run_script = package_manager.execute_command(&packages.to_vec());
             execute_command(run_script);
         }
     }

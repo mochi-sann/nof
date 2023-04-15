@@ -8,6 +8,7 @@ pub struct NpmCoomands<'a> {
     pub save_optional: &'a str,
     pub frozen_lockfile: &'a str,
     pub remove: &'a str,
+    pub execute_command: &'a str,
 }
 
 pub struct CommandList<'a> {
@@ -26,6 +27,7 @@ pub const YARN: NpmCoomands = NpmCoomands {
     save_optional: "-O",
     frozen_lockfile: "--frozen-lockfile",
     remove: "remove",
+    execute_command: "yarn -s run",
 };
 
 pub const NPM: NpmCoomands = NpmCoomands {
@@ -38,6 +40,7 @@ pub const NPM: NpmCoomands = NpmCoomands {
     save_optional: "--save-optional",
     frozen_lockfile: "--frozen-lockfile",
     remove: "remove",
+    execute_command: "npx",
 };
 
 pub const PNPM: NpmCoomands = NpmCoomands {
@@ -50,6 +53,7 @@ pub const PNPM: NpmCoomands = NpmCoomands {
     save_optional: "--save-optional",
     frozen_lockfile: "--frozen-lockfile",
     remove: "remove",
+    execute_command: "pnpx",
 };
 
 pub const COMMAND_LIST: CommandList = CommandList {
