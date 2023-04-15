@@ -18,10 +18,13 @@ To use nof, run the following command:
 Usage: nof <COMMAND>
 
 Commands:
-  run      Run node scripts [aliases: r, R, run-script]
-  install  Installs all dependencies [aliases: i, I]
-  add      Installs a package [aliases: a, A]
-  help     Print this message or the help of the given subcommand(s)
+  completion       Generates a script for completion
+  run              Run node scripts [aliases: r, R, run-script]
+  install          Installs all dependencies [aliases: i, I]
+  add              Installs a package [aliases: a, A]
+  remove           remove a package [aliases: rm]
+  execute-command  Run a command from a local or remote npm package [aliases: e, exec, E]
+  help             Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help     Print help
@@ -33,8 +36,8 @@ This will launch fzf, which allows you to search for Node.js scripts. Once you'v
 
 ## setup auto completion
 ```bash
-# zsh in ~/.zshrc
+# zsh
 nof completion --shell=zsh > /usr/local/share/zsh/site-functions/_nof
-# fizh 
+# fizh
 nof completion --shell=fish > ~/.config/fish/completions/nof.fish
 ```
