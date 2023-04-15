@@ -131,6 +131,16 @@ impl NodePackageMannegerType {
             args: command_args,
         };
     }
+    pub fn execute_command(&self, command: &Vec<String>) -> ReturnCoomad {
+        let mut command_args: Vec<String> = vec![];
+        for i in command {
+            command_args.push(i.to_string());
+        }
+        return ReturnCoomad {
+            script: self.get_commands().execute_command.to_string(),
+            args: command_args,
+        };
+    }
 }
 
 #[cfg(test)]
@@ -426,6 +436,45 @@ mod tests {
                 ReturnCoomad {
                     script: "yarn".to_string(),
                     args: vec!["remove".to_string(), "hoge".to_string(), "test".to_string()],
+                }
+            );
+        }
+    }
+
+    mod execute_command {
+        use crate::fn_lib::package_commands::{NodePackageMannegerType, ReturnCoomad};
+
+        #[test]
+        fn execute_npm() {
+            let package_manager = NodePackageMannegerType::Npm;
+            assert_eq!(
+                package_manager.execute_command(&vec!["test".to_string()]),
+                ReturnCoomad {
+                    script: "npx".to_string(),
+                    args: vec!["test".to_string()],
+                }
+            );
+        }
+
+        #[test]
+        fn execute_yarn() {
+            let package_manager = NodePackageMannegerType::Yarn;
+            assert_eq!(
+                package_manager.execute_command(&vec!["test".to_string()]),
+                ReturnCoomad {
+                    script: "yarn -s run".to_string(),
+                    args: vec!["test".to_string()],
+                }
+            );
+        }
+        #[test]
+        fn execute_pnpm() {
+            let package_manager = NodePackageMannegerType::Pnpm;
+            assert_eq!(
+                package_manager.execute_command(&vec!["test".to_string()]),
+                ReturnCoomad {
+                    script: "pnpx".to_string(),
+                    args: vec!["test".to_string()],
                 }
             );
         }
