@@ -43,7 +43,7 @@ enum Commands {
         #[arg(short, long, value_enum)]
         package_manneger: Option<NodePackageMannegerType>,
 
-        #[arg(short, long)]
+        // run script
         script: Option<String>,
     },
     #[command(about = "Installs all dependencies", visible_aliases = [ "i" , "I" ])]
