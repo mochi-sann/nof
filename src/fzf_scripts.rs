@@ -3,7 +3,7 @@
 
 use std::{borrow::Cow, sync::Arc};
 
-use ansi_term::Colour;
+use ansi_term::{Colour, Style};
 
 use skim::{
     prelude::{unbounded, SkimOptionsBuilder},
@@ -31,9 +31,12 @@ impl SkimItem for ScriptItems {
     }
     fn display<'a>(&'a self, _context: skim::DisplayContext<'a>) -> AnsiString<'a> {
         AnsiString::parse(&format!(
-            "{} :{} Back again",
-            self.scripts,
-            Colour::Green.paint("green")
+            "{} {} {}",
+            Style::new().bold().paint(&self.scripts),
+            Style::new().fg(Colour::Fixed(007 as u8)).paint("-"),
+            Style::new()
+                .fg(Colour::Fixed(007 as u8))
+                .paint(&self.scripts_value)
         ))
     }
 }
