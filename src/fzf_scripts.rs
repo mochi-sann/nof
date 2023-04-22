@@ -3,42 +3,58 @@
 
 use std::{borrow::Cow, sync::Arc};
 
+use ansi_term::{Colour, Style};
+
 use skim::{
     prelude::{unbounded, SkimOptionsBuilder},
-    ItemPreview, PreviewContext, Skim, SkimItem, SkimItemReceiver, SkimItemSender,
+    AnsiString, ItemPreview, PreviewContext, Skim, SkimItem, SkimItemReceiver, SkimItemSender,
 };
 
+use crate::debug;
+
 struct ScriptItems {
-    inner: String,
-    outer: String,
+    scripts: String,
+    scripts_value: String,
 }
 
 impl SkimItem for ScriptItems {
     fn text(&self) -> Cow<str> {
-        Cow::Borrowed(&self.inner)
+        Cow::Borrowed(&self.scripts)
     }
+
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
-        if self.outer.len() > 0 {
-            ItemPreview::Text(format!("{}", self.outer))
+        if self.scripts_value.len() > 0 {
+            ItemPreview::Text(format!("{}", self.scripts_value))
         } else {
-            ItemPreview::Text(format!("{}", self.inner))
+            ItemPreview::Text(format!("{}", self.scripts))
         }
+    }
+    fn display<'a>(&'a self, _context: skim::DisplayContext<'a>) -> AnsiString<'a> {
+        AnsiString::parse(&format!(
+            "{} {} {}",
+            Style::new().bold().paint(&self.scripts),
+            Style::new().fg(Colour::Fixed(007 as u8)).paint("-"),
+            Style::new()
+                .fg(Colour::Fixed(007 as u8))
+                .paint(&self.scripts_value)
+        ))
     }
 }
 
 pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     let options = SkimOptionsBuilder::default()
-        // .height(Some("30%"))
         .multi(true)
+        .reverse(true)
         .build()
         .unwrap();
 
     let (tx_item, rx_item): (SkimItemSender, SkimItemReceiver) = unbounded();
 
+    debug!(scripts.clone());
     for i in scripts {
         let _ = tx_item.send(Arc::new(ScriptItems {
-            inner: i.0,
-            outer: i.1,
+            scripts: i.0,
+            scripts_value: i.1,
         }));
     }
 
