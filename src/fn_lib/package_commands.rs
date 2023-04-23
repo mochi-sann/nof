@@ -9,6 +9,7 @@ pub enum NodePackageMannegerType {
     Npm,
     Yarn,
     Pnpm,
+    Bun,
 }
 #[derive(Debug, PartialEq, Clone)]
 pub struct ReturnCoomad {
@@ -22,6 +23,7 @@ impl NodePackageMannegerType {
             NodePackageMannegerType::Yarn => COMMAND_LIST.yarn,
             NodePackageMannegerType::Npm => COMMAND_LIST.npm,
             NodePackageMannegerType::Pnpm => COMMAND_LIST.pnpm,
+            NodePackageMannegerType::Bun => COMMAND_LIST.bun,
         }
     }
     pub fn is_installed_command(&self) -> bool {

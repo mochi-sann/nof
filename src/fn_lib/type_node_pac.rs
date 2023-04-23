@@ -11,6 +11,8 @@ pub fn detect_package_manager(project_dir: &str) -> NodePackageMannegerType {
         NodePackageMannegerType::Pnpm
     } else if Path::new(project_dir).join("package-lock.json").exists() {
         NodePackageMannegerType::Npm
+    } else if Path::new(project_dir).join("bun.lockb").exists() {
+        NodePackageMannegerType::Bun
     } else {
         NodePackageMannegerType::Npm
     }
@@ -37,5 +39,11 @@ mod tests {
         let project_dir = "./test_files/package_test/pnpm";
         let package_manager = detect_package_manager(project_dir);
         assert_eq!(package_manager, NodePackageMannegerType::Pnpm);
+    }
+    #[test]
+    fn test_detect_package_manager_bun() {
+        let project_dir = "./test_files/package_test/bun";
+        let package_manager = detect_package_manager(project_dir);
+        assert_eq!(package_manager, NodePackageMannegerType::Bun);
     }
 }
