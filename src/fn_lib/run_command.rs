@@ -1,7 +1,4 @@
-use std::{
-    io::{stdout, Write},
-    process::Command,
-};
+use std::process::Command;
 
 use termion::cursor::Show;
 
@@ -14,7 +11,7 @@ pub fn execute_command(command: ReturnCoomad) {
 
     Command::new("clear").status().unwrap();
     // redisplay the cursor
-    write!(stdout(), "{}", Show).unwrap();
+    print!("{}", Show);
     Command::new(command.script)
         .args(command.args)
         .status()

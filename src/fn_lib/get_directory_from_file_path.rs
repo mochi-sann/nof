@@ -4,10 +4,10 @@ pub fn get_directory_from_file_path(file_path: &PathBuf) -> Option<&Path> {
     let path = file_path;
 
     if path.is_dir() {
-        return Some(path);
+        Some(path)
     } else {
         let path = Path::new(file_path);
-        return path.parent();
+        path.parent()
     }
 }
 

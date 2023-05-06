@@ -40,10 +40,10 @@ impl NodePackageMannegerType {
         command_args.push(scripts);
 
         debug!(package_script);
-        return ReturnCoomad {
-            script: format!("{}", package_script.to_string()),
+        ReturnCoomad {
+            script: package_script.to_string(),
             args: command_args,
-        };
+        }
     }
 
     pub fn install_command(
@@ -75,10 +75,10 @@ impl NodePackageMannegerType {
             false => {}
         }
 
-        return ReturnCoomad {
+        ReturnCoomad {
             script: package_script.to_string(),
             args: command_args,
-        };
+        }
     }
     pub fn add(
         &self,
@@ -110,10 +110,10 @@ impl NodePackageMannegerType {
             command_args.push(package.to_string());
         }
 
-        return ReturnCoomad {
+        ReturnCoomad {
             script: package_script.to_string(),
             args: command_args,
-        };
+        }
     }
     pub fn remove(&self, lib: Vec<String>) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
@@ -126,20 +126,20 @@ impl NodePackageMannegerType {
             command_args.push(package.to_string());
         }
 
-        return ReturnCoomad {
+        ReturnCoomad {
             script: package_script.to_string(),
             args: command_args,
-        };
+        }
     }
     pub fn execute_command(&self, command: &Vec<String>) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
         for i in command {
             command_args.push(i.to_string());
         }
-        return ReturnCoomad {
+        ReturnCoomad {
             script: self.get_commands().execute_command.to_string(),
             args: command_args,
-        };
+        }
     }
 }
 
