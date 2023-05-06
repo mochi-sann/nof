@@ -33,9 +33,9 @@ impl SkimItem for ScriptItems {
         AnsiString::parse(&format!(
             "{} {} {}",
             Style::new().bold().paint(&self.scripts),
-            Style::new().fg(Colour::Fixed(007_u8)).paint("-"),
+            Style::new().fg(Colour::Fixed(7_u8)).paint("-"),
             Style::new()
-                .fg(Colour::Fixed(007_u8))
+                .fg(Colour::Fixed(7_u8))
                 .paint(&self.scripts_value)
         ))
     }
