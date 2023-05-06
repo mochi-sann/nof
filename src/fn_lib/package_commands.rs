@@ -41,7 +41,7 @@ impl NodePackageMannegerType {
 
         debug!(package_script);
         ReturnCoomad {
-            script:  package_script.to_string(),
+            script: package_script.to_string(),
             args: command_args,
         }
     }
