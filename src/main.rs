@@ -203,7 +203,7 @@ fn main() {
             save_peer,
             package_manneger,
         } => {
-            let folder_path = get_directory_from_file_path(&target_path);
+            let folder_path = get_directory_from_file_path(target_path);
             let package_manager = check_installde_package_maneger(package_manneger, folder_path);
             let add_command =
                 package_manager.add(lib.to_vec(), *save_dev, *save_peer, *save_optional);
@@ -215,7 +215,7 @@ fn main() {
             package_manneger,
             target_path,
         } => {
-            let folder_path = get_directory_from_file_path(&target_path);
+            let folder_path = get_directory_from_file_path(target_path);
             let package_manager = check_installde_package_maneger(package_manneger, folder_path);
             let install_command = package_manager.remove(packages.to_vec());
             debug!(install_command.clone());
@@ -230,7 +230,7 @@ fn main() {
             package_manneger,
             packages,
         } => {
-            let folder_path = get_directory_from_file_path(&target_path);
+            let folder_path = get_directory_from_file_path(target_path);
             let package_manager = check_installde_package_maneger(package_manneger, folder_path);
             let run_script = package_manager.execute_command(&packages.to_vec());
             execute_command(run_script);

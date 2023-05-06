@@ -67,6 +67,5 @@ pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     for item in selected_items.iter() {
         return_value.push(Cow::Borrowed(&item.output()).to_string())
     }
-    println!("");
     return return_value;
 }
