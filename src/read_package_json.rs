@@ -21,7 +21,7 @@ pub fn get_scripts(file_path: &Path) -> Vec<(String, String)> {
 // パッケージのpackage.jsonをパースする関数
 fn get_package_json(file_path: &Path) -> Value {
     // ファイルの内容を文字列として取得
-    let contents = fs::read_to_string(&file_path).expect("Something went wrong reading the file");
+    let contents = fs::read_to_string(file_path).expect("Something went wrong reading the file");
 
     // パースしたJSONを返す
     serde_json::from_str(&contents).unwrap()

@@ -156,7 +156,7 @@ fn main() {
             package_manneger: package_manneger_select,
             script: command_scipts,
         } => {
-            let folder_path = get_directory_from_file_path(&target_path);
+            let folder_path = get_directory_from_file_path(target_path);
             let scripts_list = get_scripts(target_path);
 
             let script = match command_scipts {
@@ -178,13 +178,13 @@ fn main() {
             save_optional,
             frozen_lockfile,
         } => {
-            let folder_path = get_directory_from_file_path(&target_path);
+            let folder_path = get_directory_from_file_path(target_path);
             let package_manager = check_installde_package_maneger(package_manneger, folder_path);
 
             let install_command = package_manager.install_command(
-                save_dev.clone(),
-                save_peer.clone(),
-                save_optional.clone(),
+                *save_dev,
+                *save_peer,
+                *save_optional,
                 *frozen_lockfile,
             );
             debug!(install_command.clone());

@@ -9,8 +9,6 @@ pub fn detect_package_manager(project_dir: &str) -> NodePackageMannegerType {
         NodePackageMannegerType::Yarn
     } else if Path::new(project_dir).join("pnpm-lock.yaml").exists() {
         NodePackageMannegerType::Pnpm
-    } else if Path::new(project_dir).join("package-lock.json").exists() {
-        NodePackageMannegerType::Npm
     } else {
         NodePackageMannegerType::Npm
     }

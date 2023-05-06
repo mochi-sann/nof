@@ -23,19 +23,19 @@ impl SkimItem for ScriptItems {
     }
 
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
-        if self.scripts_value.len() > 0 {
-            ItemPreview::Text(format!("{}", self.scripts_value))
+        if !self.scripts_value.is_empty() {
+            ItemPreview::Text(self.scripts_value.to_string())
         } else {
-            ItemPreview::Text(format!("{}", self.scripts))
+            ItemPreview::Text(self.scripts.to_string())
         }
     }
     fn display<'a>(&'a self, _context: skim::DisplayContext<'a>) -> AnsiString<'a> {
         AnsiString::parse(&format!(
             "{} {} {}",
             Style::new().bold().paint(&self.scripts),
-            Style::new().fg(Colour::Fixed(007 as u8)).paint("-"),
+            Style::new().fg(Colour::Fixed(007_u8)).paint("-"),
             Style::new()
-                .fg(Colour::Fixed(007 as u8))
+                .fg(Colour::Fixed(007_u8))
                 .paint(&self.scripts_value)
         ))
     }
@@ -67,5 +67,5 @@ pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     for item in selected_items.iter() {
         return_value.push(Cow::Borrowed(&item.output()).to_string())
     }
-    return return_value;
+    return_value
 }
