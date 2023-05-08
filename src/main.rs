@@ -128,7 +128,7 @@ enum Commands {
         package_manneger: Option<NodePackageMannegerType>,
     },
 
-    #[command(about = "Run a command from a local or remote npm package", visible_aliases =  [ "e" , "exec"  ,"E"  ] )]
+    #[command(about = "Run a command from a local or remote npm package", visible_aliases =  [ "e" , "exec"  ,"E"  , "ex"  ] )]
     ExecuteCommand {
         #[arg(short, long, default_value = "./package.json" , value_hint = ValueHint::FilePath)]
         target_path: PathBuf,
