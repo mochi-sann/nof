@@ -15,6 +15,13 @@ pub struct ReturnCoomad {
     pub script: String,
     pub args: Vec<String>,
 }
+#[derive(Debug, PartialEq, Clone)]
+pub struct AddCommandOptions {
+    pub lib: Vec<String>,
+    pub save_dev: bool,
+    pub save_peer: bool,
+    pub save_optional: bool,
+}
 
 impl NodePackageMannegerType {
     pub fn get_commands(&self) -> NpmCoomands {
@@ -80,33 +87,27 @@ impl NodePackageMannegerType {
             args: command_args,
         }
     }
-    pub fn add(
-        &self,
-        lib: Vec<String>,
-        save_dev: bool,
-        save_peer: bool,
-        save_optional: bool,
-    ) -> ReturnCoomad {
+    pub fn add(&self, options: AddCommandOptions) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
         let package_script = self.get_commands().command_name;
         let add_command = self.get_commands().add;
         command_args.push(add_command.to_string());
         // command_args.push(package_name);
-        debug!(&lib);
-        match save_dev {
+        debug!(&options.lib);
+        match options.save_dev {
             true => command_args.push(self.get_commands().save_dev.to_string()),
             false => {}
         }
-        match save_peer {
+        match options.save_peer {
             true => command_args.push(self.get_commands().save_peer.to_string()),
             false => {}
         }
-        match save_optional {
+        match options.save_optional {
             true => command_args.push(self.get_commands().save_optional.to_string()),
             false => {}
         }
 
-        for package in &lib {
+        for package in &options.lib {
             command_args.push(package.to_string());
         }
 
@@ -306,17 +307,21 @@ mod tests {
         }
     }
     mod add {
-        use crate::fn_lib::package_commands::{NodePackageMannegerType, ReturnCoomad};
+        use crate::fn_lib::package_commands::{NodePackageMannegerType, ReturnCoomad, AddCommandOptions};
 
         #[test]
         fn test_package_manager_add_command_npm() {
             let package_manager = NodePackageMannegerType::Npm;
+            let add_options: AddCommandOptions = AddCommandOptions {
+                save_dev: false,
+                save_peer: false,
+                save_optional: false,
+                lib: vec!["hoge".to_string(), "fuga".to_string()],
+            };
+
             assert_eq!(
                 package_manager.add(
-                    vec!["hoge".to_string(), "fuga".to_string()],
-                    false,
-                    false,
-                    false,
+                    add_options
                 ),
                 ReturnCoomad {
                     script: "npm".to_string(),
@@ -331,12 +336,15 @@ mod tests {
         #[test]
         fn test_package_manager_add_command_yarn() {
             let package_manager = NodePackageMannegerType::Yarn;
+            let add_options: AddCommandOptions = AddCommandOptions {
+                save_dev: false,
+                save_peer: false,
+                save_optional: false,
+                lib: vec!["hoge".to_string(), "fuga".to_string()],
+            };
             assert_eq!(
                 package_manager.add(
-                    vec!["hoge".to_string(), "fuga".to_string()],
-                    false,
-                    false,
-                    false,
+add_options
                 ),
                 ReturnCoomad {
                     script: "yarn".to_string(),
@@ -347,12 +355,15 @@ mod tests {
         #[test]
         fn test_package_manager_add_command_pnpm() {
             let package_manager = NodePackageMannegerType::Pnpm;
+            let add_options: AddCommandOptions = AddCommandOptions {
+                save_dev: false,
+                save_peer: false,
+                save_optional: false,
+                lib: vec!["hoge".to_string(), "fuga".to_string()],
+            };
             assert_eq!(
                 package_manager.add(
-                    vec!["hoge".to_string(), "fuga".to_string()],
-                    false,
-                    false,
-                    false,
+add_options
                 ),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
@@ -363,12 +374,15 @@ mod tests {
         #[test]
         fn test_package_manager_add_command_pnpm_save_dev() {
             let package_manager = NodePackageMannegerType::Pnpm;
+            let add_options: AddCommandOptions = AddCommandOptions {
+                save_dev: true,
+                save_peer: false,
+                save_optional: false,
+                lib: vec!["hoge".to_string(), "fuga".to_string()],
+            };
             assert_eq!(
                 package_manager.add(
-                    vec!["hoge".to_string(), "fuga".to_string()],
-                    true,
-                    false,
-                    false,
+add_options
                 ),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
@@ -384,12 +398,15 @@ mod tests {
         #[test]
         fn test_package_manager_add_command_pnpm_save_peer() {
             let package_manager = NodePackageMannegerType::Pnpm;
+            let add_options: AddCommandOptions = AddCommandOptions {
+                save_dev: false,
+                save_peer: true,
+                save_optional: false,
+                lib: vec!["hoge".to_string(), "fuga".to_string()],
+            };
             assert_eq!(
                 package_manager.add(
-                    vec!["hoge".to_string(), "fuga".to_string()],
-                    false,
-                    true,
-                    false,
+                    add_options
                 ),
                 ReturnCoomad {
                     script: "pnpm".to_string(),

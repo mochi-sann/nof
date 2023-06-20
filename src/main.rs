@@ -9,7 +9,7 @@ use clap_complete::{generate, Generator, Shell};
 use fn_lib::{
     get_directory_from_file_path::get_directory_from_file_path,
     match_package_maneger::check_installde_package_maneger,
-    package_commands::{NodePackageMannegerType, ReturnCoomad},
+    package_commands::{AddCommandOptions, NodePackageMannegerType, ReturnCoomad},
     run_command::execute_command,
 };
 use read_package_json::get_scripts;
@@ -205,8 +205,14 @@ fn main() {
         } => {
             let folder_path = get_directory_from_file_path(target_path);
             let package_manager = check_installde_package_maneger(package_manneger, folder_path);
-            let add_command =
-                package_manager.add(lib.to_vec(), *save_dev, *save_peer, *save_optional);
+            let add_options: AddCommandOptions = AddCommandOptions {
+                save_dev: *save_dev,
+                save_peer: *save_peer,
+                save_optional: *save_optional,
+                lib: lib.to_vec(),
+            };
+
+            let add_command = package_manager.add(add_options);
             debug!(add_command.clone());
             execute_command(add_command);
         }
@@ -225,6 +231,7 @@ fn main() {
             let run_script: ReturnCoomad = install_command;
             execute_command(run_script);
         }
+
         Commands::ExecuteCommand {
             target_path,
             package_manneger,
