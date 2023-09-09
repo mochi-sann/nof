@@ -9,6 +9,7 @@ pub enum NodePackageMannegerType {
     Npm,
     Yarn,
     Pnpm,
+    Bun,
 }
 #[derive(Debug, PartialEq, Clone)]
 pub struct ReturnCoomad {
@@ -22,6 +23,7 @@ impl NodePackageMannegerType {
             NodePackageMannegerType::Yarn => COMMAND_LIST.yarn,
             NodePackageMannegerType::Npm => COMMAND_LIST.npm,
             NodePackageMannegerType::Pnpm => COMMAND_LIST.pnpm,
+            NodePackageMannegerType::Bun => COMMAND_LIST.bun,
         }
     }
     pub fn is_installed_command(&self) -> bool {
@@ -218,6 +220,18 @@ mod tests {
                 package_manager.install_command(false, false, false, false),
                 ReturnCoomad {
                     script: "pnpm".to_string(),
+                    args: vec!["install".to_string()],
+                }
+            );
+        }
+        // add bun test for install_command test
+        #[test]
+        fn test_package_manager_install_command_bun() {
+            let package_manager = NodePackageMannegerType::Bun;
+            assert_eq!(
+                package_manager.install_command(false, false, false, false),
+                ReturnCoomad {
+                    script: "bun".to_string(),
                     args: vec!["install".to_string()],
                 }
             );
