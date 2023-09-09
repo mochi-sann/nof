@@ -15,6 +15,7 @@ pub struct CommandList<'a> {
     pub npm: NpmCoomands<'a>,
     pub yarn: NpmCoomands<'a>,
     pub pnpm: NpmCoomands<'a>,
+    pub bun: NpmCoomands<'a>,
 }
 
 pub const YARN: NpmCoomands = NpmCoomands {
@@ -56,8 +57,22 @@ pub const PNPM: NpmCoomands = NpmCoomands {
     execute_command: "pnpx",
 };
 
+pub const BUN: NpmCoomands = NpmCoomands {
+    command_name: "bun",
+    run: "run",
+    isntall: "install",
+    add: "add",
+    save_dev: "--save-dev",
+    save_peer: "--save-peer",
+    save_optional: "--save-optional",
+    frozen_lockfile: "--frozen-lockfile",
+    remove: "remove",
+    execute_command: "bun",
+};
+
 pub const COMMAND_LIST: CommandList = CommandList {
     npm: NPM,
     yarn: YARN,
     pnpm: PNPM,
+    bun: BUN,
 };
