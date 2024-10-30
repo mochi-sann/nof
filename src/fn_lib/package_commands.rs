@@ -38,7 +38,7 @@ impl NodePackageMannegerType {
     pub fn run_node_scripts(&self, scripts: String) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
         let package_script = self.get_commands().command_name;
-        command_args.push("run".to_string());
+        command_args.push(self.get_commands().run.to_string());
         command_args.push(scripts);
 
         debug!(package_script);
