@@ -61,7 +61,7 @@ pub fn fzf_scipts(scripts: Vec<(String, String)>) -> Vec<String> {
     drop(tx_item);
     let selected_items = Skim::run_with(&options, Some(rx_item))
         .map(|out| out.selected_items)
-        .unwrap_or_else(Vec::new);
+        .unwrap_or_default();
 
     let mut return_value: Vec<String> = Vec::new();
     for item in selected_items.iter() {

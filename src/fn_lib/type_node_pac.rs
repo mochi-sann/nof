@@ -41,7 +41,7 @@ mod tests {
     #[test]
     fn test_detect_package_manager_bun() {
         let project_dir = "./test_files/package_test/bun";
-        let package_manager = detect_package_manager(project_dir);
+        let package_manager: NodePackageMannegerType = detect_package_manager(project_dir);
         assert_eq!(package_manager, NodePackageMannegerType::Bun);
     }
 }
