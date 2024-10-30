@@ -36,4 +36,25 @@ mod tests {
         // Check that the result matches the expected package manager
         assert_eq!(result, package_manager);
     }
+
+    #[test]
+    fn test_check_uninstalled_package_manager() {
+        let folder_path = Some(PathBuf::from("/path/to/folder"));
+        let package_manager = NodePackageMannegerType::Yarn; // Set the package manager to Yarn for this test
+        let result =
+            check_installde_package_maneger(&Some(package_manager.clone()), folder_path.as_deref());
+
+        // Check that the result matches the expected error message
+        assert_eq!(result.get_commands().command_name, "yarn");
+    }
+
+    #[test]
+    fn test_check_none_package_manager() {
+        let folder_path = Some(PathBuf::from("/path/to/folder"));
+        let package_manager: Option<NodePackageMannegerType> = None;
+        let result = check_installde_package_maneger(&package_manager, folder_path.as_deref());
+
+        // Check that the result matches the expected package manager
+        assert_eq!(result.get_commands().command_name, "npm");
+    }
 }
