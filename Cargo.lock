@@ -640,6 +640,7 @@ dependencies = [
  "ansi_term",
  "clap 4.5.28",
  "clap_complete",
+ "serde",
  "serde_json",
  "skim",
  "termion",

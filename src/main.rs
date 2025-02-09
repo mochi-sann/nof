@@ -2,7 +2,7 @@ mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
 
-use std::{io, path::PathBuf};
+use std::{collections::HashMap, fs, io, path::PathBuf};
 
 use clap::{Command, CommandFactory, Parser, ValueHint};
 use clap_complete::{generate, Generator, Shell};
@@ -13,6 +13,7 @@ use fn_lib::{
     run_command::execute_command,
 };
 use read_package_json::get_scripts;
+use serde::Deserialize;
 
 #[derive(Debug, Parser)]
 #[clap(
@@ -237,4 +238,29 @@ fn main() {
         }
     }
     // get_scripts();
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn verify_cli() {
+        use clap::CommandFactory;
+        Cli::command().debug_assert()
+    }
+    #[test]
+    fn test_run_command() {
+        let cli = Cli::try_parse_from(&["myapp", "run", "test-script" , "--target_path=./hoge"]).unwrap();
+        if let Commands::Run {
+            script,
+            target_path,
+            package_manneger,
+        } = cli.command
+        {
+            // assert_eq!(script, Some("test-script".to_string()));
+            assert_eq!(target_path.to_str() , Some("./hoge"));
+        } else {
+            panic!("Expected run command");
+        }
+    }
 }
