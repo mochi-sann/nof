@@ -169,7 +169,7 @@ fn main() {
                 check_installde_package_maneger(package_manneger_select, folder_path);
             let run_scripts = package_manager.run_node_scripts(script[0].to_string());
 
-            execute_command(run_scripts);
+            execute_command(package_manager, run_scripts);
         }
         Commands::Install {
             target_path,
