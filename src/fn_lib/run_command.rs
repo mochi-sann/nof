@@ -1,9 +1,9 @@
-use std::process::Command;
+use std::{path::PathBuf, process::Command};
 
 use termion::cursor::Show;
 use termion::color;
 
-use crate::debug;
+use crate::{debug, read_package_json};
 
 use super::package_commands::{ReturnCoomad, NodePackageMannegerType};
 
