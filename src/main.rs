@@ -194,7 +194,7 @@ fn main() {
             debug!(install_command.clone());
 
             let run_script: ReturnCoomad = install_command;
-            execute_command(run_script);
+            execute_command(package_manager, run_script);
         }
         Commands::Add {
             target_path,
@@ -209,7 +209,7 @@ fn main() {
             let add_command =
                 package_manager.add(lib.to_vec(), *save_dev, *save_peer, *save_optional);
             debug!(add_command.clone());
-            execute_command(add_command);
+            execute_command(package_manager, add_command);
         }
         Commands::Remove {
             packages,
@@ -224,7 +224,7 @@ fn main() {
             debug!(install_command.clone());
 
             let run_script: ReturnCoomad = install_command;
-            execute_command(run_script);
+            execute_command(package_manager, run_script);
         }
         Commands::ExecuteCommand {
             target_path,
@@ -234,7 +234,7 @@ fn main() {
             let folder_path = get_directory_from_file_path(target_path);
             let package_manager = check_installde_package_maneger(package_manneger, folder_path);
             let run_script = package_manager.execute_command(&packages.to_vec());
-            execute_command(run_script);
+            execute_command(package_manager, run_script);
         }
     }
     // get_scripts();
