@@ -1,5 +1,4 @@
 use std::process::Command;
-use std::io::{self, Write};
 
 use termion::cursor::Show;
 use termion::color;

@@ -2,7 +2,7 @@ mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
 
-use std::{collections::HashMap, fs, io, path::PathBuf};
+use std::{io, path::PathBuf};
 
 use clap::{Command, CommandFactory, Parser, ValueHint};
 use clap_complete::{generate, Generator, Shell};
@@ -13,7 +13,6 @@ use fn_lib::{
     run_command::execute_command,
 };
 use read_package_json::get_scripts;
-use serde::Deserialize;
 
 #[derive(Debug, Parser)]
 #[clap(
