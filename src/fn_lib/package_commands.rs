@@ -133,7 +133,7 @@ impl NodePackageMannegerType {
             args: command_args,
         }
     }
-    pub fn get_command_suggestions(&self, input: &str) -> Vec<String> {
+    pub fn get_command_suggestions(&self, input: &str, scripts: Option<Vec<(String, String)>>) -> Vec<String> {
         let commands = self.get_commands();
         let mut suggestions = vec![
             commands.run.to_string(),
@@ -142,8 +142,17 @@ impl NodePackageMannegerType {
             commands.remove.to_string(),
         ];
         
+        // Add scripts from package.json if available
+        if let Some(scripts) = scripts {
+            for (script_name, _) in scripts {
+                suggestions.push(script_name);
+            }
+        }
+
         // Filter suggestions based on input
         suggestions.retain(|s| s.starts_with(input));
+        suggestions.sort();
+        suggestions.dedup();
         suggestions
     }
 

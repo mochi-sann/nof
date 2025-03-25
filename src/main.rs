@@ -2,7 +2,7 @@ mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
 
-use std::{io, path::PathBuf};
+use std::{io, path::{Path, PathBuf}};
 
 use clap::{Command, CommandFactory, Parser, ValueHint};
 use clap_complete::{generate, Generator, Shell};

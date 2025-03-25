@@ -22,7 +22,8 @@ pub fn execute_command(package_manager: NodePackageMannegerType, command: Return
     // Show command suggestions before executing
     if !command.args.is_empty() {
         let input = command.args[0].clone();
-        let suggestions = package_manager.get_command_suggestions(&input);
+        let scripts = read_package_json::get_scripts(&PathBuf::from("./package.json"));
+        let suggestions = package_manager.get_command_suggestions(&input, Some(scripts));
         show_suggestions(suggestions);
     }
 
