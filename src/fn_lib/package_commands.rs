@@ -1,4 +1,5 @@
 use std::process::Command;
+use std::collections::HashMap;
 
 use crate::debug;
 
@@ -133,6 +134,20 @@ impl NodePackageMannegerType {
             args: command_args,
         }
     }
+    pub fn get_command_suggestions(&self, input: &str) -> Vec<String> {
+        let commands = self.get_commands();
+        let mut suggestions = vec![
+            commands.run.to_string(),
+            commands.isntall.to_string(),
+            commands.add.to_string(),
+            commands.remove.to_string(),
+        ];
+        
+        // Filter suggestions based on input
+        suggestions.retain(|s| s.starts_with(input));
+        suggestions
+    }
+
     pub fn execute_command(&self, command: &Vec<String>) -> ReturnCoomad {
         let mut command_args: Vec<String> = vec![];
         for i in command {
