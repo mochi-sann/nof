@@ -1,8 +1,9 @@
 mod fn_lib;
 mod fzf_scripts;
 mod read_package_json;
+mod completion;
 
-use std::{io, path::{Path, PathBuf}};
+use std::{io, path::PathBuf};
 
 use clap::{Command, CommandFactory, Parser, ValueHint};
 use clap_complete::{generate, Generator, Shell};
@@ -33,6 +34,15 @@ enum Commands {
     Completion {
         #[clap(long, short, value_enum)]
         shell: Shell,
+        
+        #[arg(long, default_value = "false", help = "Generate custom completion with dynamic script support")]
+        custom: bool,
+    },
+
+    #[command(about = "Provides dynamic completion for scripts", hide = true)]
+    CompletionScripts {
+        #[arg(short, long, default_value = "./package.json", value_hint = ValueHint::FilePath)]
+        target_path: PathBuf,
     },
 
     #[command(about = "Run node scripts" , visible_aliases = [ "r" , "R" , "run-script"])]
@@ -43,7 +53,8 @@ enum Commands {
         #[arg(short, long, value_enum)]
         package_manneger: Option<NodePackageMannegerType>,
 
-        // run script
+        /// Script name to run (auto-completed from package.json)
+        #[arg(value_hint = ValueHint::Other)]
         script: Option<String>,
     },
     #[command(about = "Installs all dependencies", visible_aliases = [ "i" , "I" ])]
@@ -147,9 +158,28 @@ fn print_completions<G: Generator>(gen: G, cmd: &mut Command) {
 fn main() {
     let cli = Cli::parse();
     match &cli.command {
-        Commands::Completion { shell } => {
-            let mut cmd = Cli::command();
-            print_completions(*shell, &mut cmd);
+        Commands::Completion { shell, custom } => {
+            if *custom {
+                match shell {
+                    Shell::Zsh => println!("{}", completion::generate_zsh_completion()),
+                    Shell::Fish => println!("{}", completion::generate_fish_completion()),
+                    Shell::Bash => println!("{}", completion::generate_bash_completion()),
+                    _ => {
+                        eprintln!("Custom completion not supported for {:?}. Using standard completion.", shell);
+                        let mut cmd = Cli::command();
+                        print_completions(*shell, &mut cmd);
+                    }
+                }
+            } else {
+                let mut cmd = Cli::command();
+                print_completions(*shell, &mut cmd);
+            }
+        }
+        Commands::CompletionScripts { target_path } => {
+            let completions = completion::get_script_completions(target_path);
+            for completion in completions {
+                println!("{}", completion);
+            }
         }
         Commands::Run {
             target_path,
@@ -249,11 +279,11 @@ mod tests {
     }
     #[test]
     fn test_run_command() {
-        let cli = Cli::try_parse_from(&["myapp", "run", "test-script" , "--target_path=./hoge"]).unwrap();
+        let cli = Cli::try_parse_from(&["myapp", "run", "test-script" , "--target-path=./hoge"]).unwrap();
         if let Commands::Run {
-            script,
+            script: _,
             target_path,
-            package_manneger,
+            package_manneger: _,
         } = cli.command
         {
             // assert_eq!(script, Some("test-script".to_string()));

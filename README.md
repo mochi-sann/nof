@@ -36,12 +36,50 @@ Options:
 
 This will launch fzf, which allows you to search for Node.js scripts. Once you've selected a script from the search results, it will be executed.
 
-## setup auto completion
+## Shell Completion Setup
+
+NOF supports two types of shell completion:
+
+### 1. Standard Completion (Basic)
 
 ```bash
 # zsh
 nof completion --shell=zsh > /usr/local/share/zsh/site-functions/_nof
+
 # fish
 nof completion --shell=fish > ~/.config/fish/completions/nof.fish
+
+# bash
+nof completion --shell=bash > /etc/bash_completion.d/nof
 ```
+
+### 2. Dynamic Completion (Recommended)
+
+Dynamic completion provides intelligent autocompletion for package.json scripts:
+
+```bash
+# zsh
+nof completion --shell=zsh --custom > /usr/local/share/zsh/site-functions/_nof
+
+# fish
+nof completion --shell=fish --custom > ~/.config/fish/completions/nof.fish
+
+# bash
+nof completion --shell=bash --custom > /etc/bash_completion.d/nof
+```
+
+**Features of Dynamic Completion:**
+- Auto-completes script names from package.json when typing `nof run <TAB>`
+- Works with custom `--target-path` arguments
+- Supports all run command aliases (`nof r <TAB>`, `nof R <TAB>`)
+- Intelligently reads from the correct package.json file
+
+**Example Usage:**
+```bash
+# After setup, you can use tab completion:
+nof run <TAB>
+# Shows: build  dev  test  start  lint  format  coverage  ...
+
+nof run --target-path ../other-project/package.json <TAB>
+# Shows scripts from the specified package.json
 ```
